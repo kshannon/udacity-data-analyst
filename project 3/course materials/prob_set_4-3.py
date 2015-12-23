@@ -55,6 +55,11 @@ FIELDS ={'rdf-schema#label': 'label',
 
 def remove_spider(value):
     return re.sub('\(spider\)', '', value).strip()
+
+#def get_keys(query_dict):
+#    print query_dict
+#    for keys, values in query_dict:
+#        print {keys : keys[values]}
     
 
 def add_field(filename, fields):
@@ -66,7 +71,6 @@ def add_field(filename, fields):
         for i in range(3):
             l = reader.next()
         # YOUR CODE HERE
-
         for row in reader:
             for label in process_fields:
                 if row[label] == "NULL":
@@ -76,16 +80,18 @@ def add_field(filename, fields):
                 else:
                     key = remove_spider(row[label])
                     data[key] = value
-
-
-        print data
-
     return data
-
 
 def update_db(data, db):
     # YOUR CODE HERE
-    pass
+    #print db.getCollectionNames()
+    for keys in data:
+        print "Keys: [%s] and values: [%s]" % (keys, data[keys])
+        db.arachnid.update(
+                            {"label" : keys},
+                            {"$set" : {"classification" : {"binomialAuthority" : data[keys]}}}
+                            )
+
 
 
 def test():
