@@ -7,7 +7,6 @@ import codecs
 import json
 
 
-
 lower = re.compile(r'^([a-z]|_)*$')
 lower_colon = re.compile(r'^([a-z]|_)*:([a-z]|_)*$')
 problemchars = re.compile(r'[=\+/&<>;\'"\?%#$@\,\. \t\r\n]')
@@ -56,21 +55,16 @@ def shape_data(element):
         return data_element
 
 
+def process_osm(file_in):
+	data = []
+	with open(file_in) as file:
+		for _, element in ET.iterparse(file):
+			el = shape_data(element)
+			if el:
+				data.append(el)
+	#pprint.pprint(data)
+	
+	return data
 
-
-def process_map(file_in, pretty = False):
-    # You do not need to change this file
-    file_out = "{0}.json".format(file_in)
-    data = []
-    with codecs.open(file_out, "w") as fo:
-        for _, element in ET.iterparse(file_in):
-            el = shape_data(element)
-            if el:
-                data.append(el)
-    return data
-
-file_in = "sample_seattle.osm"
-process_map(file_in)
-
-
-
+if __name__ == "__main__":
+    process_osm('sample.osm')
