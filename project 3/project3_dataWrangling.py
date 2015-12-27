@@ -4,8 +4,13 @@ import xml.etree.cElementTree as ET
 import pprint
 import re
 import codecs
-import json
+import pymongo
 from pymongo import MongoClient
+
+client = MongoClient()
+db = client.seattle_osm_database
+
+way_node_collection = db.way_node_collection
 
 
 lower = re.compile(r'^([a-z]|_)*$')
@@ -57,15 +62,11 @@ def shape_data(element):
 
 
 def process_osm(file_in):
-	data = []
 	with open(file_in) as file:
 		for _, element in ET.iterparse(file):
 			el = shape_data(element)
 			if el:
-				data.append(el)
-	#pprint.pprint(data)
-	
-	return data
+				way_node_collection.insert(el)
 
 if __name__ == "__main__":
-    process_osm('sample.osm')
+    process_osm('example.osm')
