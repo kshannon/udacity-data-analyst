@@ -5,6 +5,7 @@ import pprint
 import re
 import codecs
 import json
+from pymongo import MongoClient
 
 
 
@@ -67,7 +68,8 @@ def process_map(file_in, pretty = False):
             el = shape_data(element)
             if el:
                 data.append(el)
-    return data
+        json.dump(data, fo)
+    #return data
 
 file_in = "sample_seattle.osm"
 process_map(file_in)
