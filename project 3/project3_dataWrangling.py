@@ -156,11 +156,16 @@ def shape_data(element):
 					val = clean_street(val)
 					
 				address[addr_key] = val
+			
+			# save this key/value to the node
+			node[key] = val
 		elif keyType == 'ref':
 			node_refs.append(child.attrib['ref'])
 		else:
 			print 'not k/v: ', keyType
-		node['address'] = address
+		
+		if len(address) > 0:
+			node['address'] = address
 		if element.tag == 'way':
 			node['node_refs'] = node_refs
 	
@@ -181,13 +186,15 @@ def process_osm(file_in):
 		for _, element in ET.iterparse(file):
 			el = shape_data(element)
 			if el:
-				way_node_collection.insert(el)
+				pprint.pprint(el)
+				pass
+				#way_node_collection.insert(el)
 	
 	
 if __name__ == "__main__":
-    #process_osm('sample.osm')
+    process_osm('sample.osm')
 	#process_osm('example.osm')
-	process_osm('seattle_washington.osm')
+	#process_osm('seattle_washington.osm')
 
 print ""
 
