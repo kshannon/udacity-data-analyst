@@ -186,15 +186,14 @@ def process_osm(file_in):
 		for _, element in ET.iterparse(file):
 			el = shape_data(element)
 			if el:
-				pprint.pprint(el)
-				pass
-				#way_node_collection.insert(el)
+				#pprint.pprint(el)
+				way_node_collection.insert(el)
 	
 	
 if __name__ == "__main__":
-    process_osm('sample.osm')
+    #process_osm('sample.osm')
 	#process_osm('example.osm')
-	#process_osm('seattle_washington.osm')
+	process_osm('seattle_washington.osm')
 
 print ""
 
