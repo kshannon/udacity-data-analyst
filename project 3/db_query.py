@@ -5,8 +5,8 @@ from pymongo import MongoClient
 def make_pipeline():
 	# complete the aggregation pipeline
 	pipeline = [ 
-			#{'$match' : {'source' : 1}},
-			{'$group' : {'_id' : '$source',
+			#{'$match' : {'user' : 1}},
+			{'$group' : {'_id' : '$user',
                             'count' : {'$sum' : 1 }}},
             {'$sort' : {'count' : -1}},
             {'$limit' : 20}
@@ -36,6 +36,11 @@ if __name__ == "__main__":
 				%(db.count({'type' : 'node'}),
 				db.count({'type' : 'way'})))
 
+	#return the number of documents in db
+	print 'Number of documents in db: ', db.find().count()
+
+	#return the num of unique users
+	print 'Unique Users: ', db.distinct({'created.user'}).length
 
 	print "Saved by the "
 
