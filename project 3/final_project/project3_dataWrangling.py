@@ -220,7 +220,7 @@ def shape_data(element):
 	
 	#print 'Exited out of invalid node'
 	return None
-	
+
 	# What formatted data: <node>, could look like after the xml has passed through this function:
 		# {
 		# 	"amenity" : "bicycle_parking",

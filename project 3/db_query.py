@@ -2,19 +2,15 @@ import pprint
 from pymongo import MongoClient
 
 
-
 def make_pipeline():
 	# complete the aggregation pipeline
 	pipeline = [ 
-			{'$match' : {'amenity' : 'restaurant'}},
-			{'$group' : {'_id' : '$cuisine',
+			#{'$match' : {'source' : 1}},
+			{'$group' : {'_id' : '$source',
                             'count' : {'$sum' : 1 }}},
             {'$sort' : {'count' : -1}},
             {'$limit' : 20}
-
 	]
-	
-
 	return pipeline
 
 
@@ -35,10 +31,17 @@ if __name__ == "__main__":
 
 	for document in result:
 		pprint.pprint(document)
-	print ""
+
+	print ("number of nodes: %d and number of ways: %d" 
+				%(db.count({'type' : 'node'}),
+				db.count({'type' : 'way'})))
+
+
+	print "Saved by the "
 
 
 #print "size of collection: ", db.way_node_collection.count()
+
 
 #pprint.pprint(db.way_node_collection.find_one())
 
@@ -155,6 +158,43 @@ if __name__ == "__main__":
 					# {u'_id': u'sandwich', u'count': 56}
 					# {u'_id': u'vietnamese', u'count': 53}
 					# {u'_id': u'seafood', u'count': 43}
+
+
+# SOURCE INFO:
+	# Unique source counts:
+			# pipeline = [ 
+			# 		{'$group' : {'_id' : '$source',
+		 #                            'count' : {'$sum' : 1 }}},
+		 #            {'$sort' : {'count' : -1}},
+		 #            {'$limit' : 20}
+			# ]
+	# returns:
+					# {u'_id': None, u'count': 6917511}
+					# {u'_id': u'King County GIS;data.seattle.gov', u'count': 183167}
+					# {u'_id': u'data.seattle.gov', u'count': 56847}
+					# {u'_id': u'Bing', u'count': 39542}
+					# {u'_id': u'US-NPS_import_b2a6c900-5dcc-11de-8509-001e2a3ffcd7',
+					#  u'count': 31998}
+					# {u'_id': u'King County GIS', u'count': 30752}
+					# {u'_id': u'http://www.fs.fed.us/r6/data-library/gis/olympic/hydronet_meta.htm',
+					#  u'count': 30479}
+					# {u'_id': u'PGS', u'count': 21490}
+					# {u'_id': u'NRCan-CanVec-10.0', u'count': 13165}
+					# {u'_id': u'yahoo_wms', u'count': 12371}
+					# {u'_id': u'bing', u'count': 11669}
+					# {u'_id': u'NRCan-CanVec-8.0', u'count': 5460}
+					# {u'_id': u'US-NFS', u'count': 3952}
+					# {u'_id': u'SDOT Bike Rack Import 2012', u'count': 2481}
+					# {u'_id': u'TIGER/Line\xae 2008 Place Shapefiles (http://www.census.gov/geo/www/tiger/)',
+					#  u'count': 1146}
+					# {u'_id': u'Yahoo', u'count': 996}
+					# {u'_id': u'data.seattle.gov;King County GIS', u'count': 994}
+					# {u'_id': u'Garmin Forerunner 305', u'count': 985}
+					# {u'_id': u'Geobase_Import_2009', u'count': 909}
+					# {u'_id': u'tiger_import_20070610', u'count': 835}
+
+
+
 
 # time min max
 # relegion/church
