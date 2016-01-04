@@ -3,8 +3,8 @@
 
 import xml.etree.ElementTree as ET  # Use cElementTree or lxml if too slow
 
-OSM_FILE = "seattle_washington.osm"  # Replace this with your osm file
-SAMPLE_FILE = "sample_seattle.osm"
+OSM_FILE = "sample_seattle.osm"  # Replace this with your osm file
+SAMPLE_FILE = "tiny_seattle.osm"
 
 
 def get_element(osm_file, tags=('node', 'way', 'relation')):
