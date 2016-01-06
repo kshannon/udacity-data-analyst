@@ -1,0 +1,4 @@
+# ignore all .osm xml data and Enron email raw data sets.
+*.osm
+maildir/
+emails_by_address/
