@@ -53,6 +53,52 @@ print "Colwell's from messages to poi: ", (enron_data["COLWELL WESLEY"]
 print "Skillings's total stock options exercised: ",( 
 	enron_data["SKILLING JEFFREY K"]['exercised_stock_options'])
 
+
+# print who took home the most money of the three
+print "Skillings's take home: ", enron_data["SKILLING JEFFREY K"]['total_payments']
+print "Lay's take home: ", enron_data["LAY KENNETH L"]['total_payments']
+print "Fastow's take home: ", enron_data["FASTOW ANDREW S"]['total_payments']
+
+
+# discover how num of NaN in ['salary'] and ['email_address']
+NaN_salary = 0
+NaN_email_addy = 0
+for k, dictionary in enron_data.iteritems():
+	for k, v in dictionary.iteritems():
+		if k == 'salary': 
+			if v == 'NaN':
+				NaN_salary += 1
+		elif k == 'email_address':
+			if v == 'NaN':
+				NaN_email_addy += 1
+		else: 
+			continue
+print "Num of NaN Salaries: %s and Num of NaN Email Addys: %s" % (NaN_salary, NaN_email_addy)
+
+
+# num of people thta have NaN for total payments in E+F dataset
+NaN_total_payments = 0
+for k, dictionary in enron_data.iteritems():
+	for k, v in dictionary.iteritems():
+		if k == 'total_payments': 
+			if v == 'NaN': NaN_total_payments += 1
+
+percentage_total_paymts = float(NaN_total_payments)/len(enron_data)*100
+
+print "Num of NaN total payments: %s and percentage of total datset is: %s" % (
+									NaN_total_payments, percentage_total_paymts)
+
+
+# % of POIs have NaN for total payments
+NaN_pay_poi = {}
+for key, dictionary in enron_data.iteritems():
+	for k, v in dictionary.iteritems():
+		if k == 'poi':
+			if v:
+				NaN_pay_poi[key] = enron_data[key]['total_payments']
+print len(NaN_pay_poi)
+
+
 # hardware bell
 print ('\a')
 
