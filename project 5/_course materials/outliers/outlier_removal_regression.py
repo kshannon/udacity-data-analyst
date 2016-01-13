@@ -26,13 +26,15 @@ ages_train, ages_test, net_worths_train, net_worths_test = train_test_split(ages
 ### fill in a regression here!  Name the regression object reg so that
 ### the plotting code below works, and you can see what your regression looks like
 
-
-
-
-
-
-
-
+from sklearn import linear_model
+# make linear regression class object
+reg = linear_model.LinearRegression()
+reg.fit(ages_train, net_worths_train)
+# attributes coef and intercept from linear regression sklearn
+print "coef: ", reg.coef_
+print "intercept: ", reg.intercept_
+print "model score: ", reg.score(ages_test, net_worths_test)
+# attrib)
 
 
 
@@ -55,10 +57,6 @@ except NameError:
 
 
 
-
-
-
-
 ### only run this code if cleaned_data is returning data
 if len(cleaned_data) > 0:
     ages, net_worths, errors = zip(*cleaned_data)
@@ -78,6 +76,9 @@ if len(cleaned_data) > 0:
     plt.ylabel("net worths")
     plt.show()
 
+    print "new coef: ", reg.coef_
+    print "new intercept: ", reg.intercept_
+    print "new model score: ", reg.score(ages_test, net_worths_test)
 
 else:
     print "outlierCleaner() is returning an empty list, no refitting to be done"

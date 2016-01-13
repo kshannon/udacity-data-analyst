@@ -4,18 +4,12 @@
     Skeleton code for k-means clustering mini-project.
 """
 
-
-
-
 import pickle
 import numpy
 import matplotlib.pyplot as plt
 import sys
 sys.path.append("../tools/")
 from feature_format import featureFormat, targetFeatureSplit
-
-
-
 
 def Draw(pred, features, poi, mark_poi=False, name="image.png", f1_name="feature 1", f2_name="feature 2"):
     """ some plotting code designed to help you visualize your clusters """
@@ -43,11 +37,30 @@ data_dict = pickle.load( open("../final_project/final_project_dataset.pkl", "r")
 ### there's an outlier--remove it! 
 data_dict.pop("TOTAL", 0)
 
+lst = []
+for k,v in data_dict.iteritems():
+    if v["exercised_stock_options"] == 'NaN':
+        continue
+    lst.append(v["exercised_stock_options"])
+sorted_lst = sorted(lst)
+print "stock option min: ", sorted_lst[0]
+print "stock option max: ", sorted_lst[-1]
+
+lst2 = []
+for k,v in data_dict.iteritems():
+    if v["salary"] == 'NaN':
+        continue
+    lst2.append(v["salary"])
+sorted_lst2 = sorted(lst2)
+print "salary min: ", sorted_lst2[0]
+print "salary max: ", sorted_lst2[-1]
+         
 
 ### the input features we want to use 
 ### can be any key in the person-level dictionary (salary, director_fees, etc.) 
 feature_1 = "salary"
 feature_2 = "exercised_stock_options"
+#feature_3 = "total_payments"
 poi  = "poi"
 features_list = [poi, feature_1, feature_2]
 data = featureFormat(data_dict, features_list )
@@ -64,7 +77,11 @@ plt.show()
 
 ### cluster here; create predictions of the cluster labels
 ### for the data and store them to a list called pred
+from sklearn.cluster import KMeans
 
+kmeans_cluster = KMeans(n_clusters=2)
+kmeans_cluster.fit(finance_features)
+pred = kmeans_cluster.predict(finance_features)
 
 
 
