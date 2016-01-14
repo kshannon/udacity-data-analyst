@@ -27,15 +27,22 @@ def parseOutText(f):
         ### remove punctuation
         text_string = content[1].translate(string.maketrans("", ""), string.punctuation)
 
-        ### project part 2: comment out the line below
-        words = text_string
+                ### project part 2: comment out the line below
+        #words = text_string
 
-        ### split the text string into individual words, stem each word,
-        ### and append the stemmed word to words (make sure there's a single
-        ### space between each stemmed word)
-        
+                ### split the text string into individual words, stem each word,
+                ### and append the stemmed word to words (make sure there's a single
+                ### space between each stemmed word)
+    # print type(text_string)
+    # print len(text_string)
+    # print text_string
+    stemmer = SnowballStemmer("english")
 
-
+    split_text = text_string.split()
+    
+    singles = [stemmer.stem(word) for word in split_text]
+    words = (" ").join(singles)
+    print words
 
 
     return words

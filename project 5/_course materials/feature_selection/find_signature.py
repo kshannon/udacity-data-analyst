@@ -2,6 +2,7 @@
 
 import pickle
 import numpy
+from sklearn import tree
 numpy.random.seed(42)
 
 
@@ -39,5 +40,23 @@ labels_train   = labels_train[:150]
 
 ### your code goes here
 
+clf = tree.DecisionTreeClassifier()
+clf = clf.fit(features_train, labels_train)
+pred = clf.predict(features_test)
 
+score = clf.score(features_test, labels_test)
+print "score: ", score
+
+print "len of features: ", len(clf.feature_importances_)
+
+list_of_features = clf.feature_importances_
+
+for idx, feature in enumerate(list_of_features):
+	if feature >= 0.2:
+		print "index: %s and feature: %s " % (idx, feature)
+		print type(vectorizer.get_feature_names())
+		print "word: ", vectorizer.get_feature_names()[idx]
+
+# for word in vectorizer.get_feature_names():
+# 	print word
 

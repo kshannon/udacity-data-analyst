@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import sys
 sys.path.append("../tools/")
 from feature_format import featureFormat, targetFeatureSplit
+from sklearn.preprocessing import MinMaxScaler
 
 def Draw(pred, features, poi, mark_poi=False, name="image.png", f1_name="feature 1", f2_name="feature 2"):
     """ some plotting code designed to help you visualize your clusters """
@@ -66,6 +67,11 @@ features_list = [poi, feature_1, feature_2]
 data = featureFormat(data_dict, features_list )
 poi, finance_features = targetFeatureSplit( data )
 
+weights = numpy.array(finance_features)
+scaler = MinMaxScaler()
+rescaled_weight = scaler.fit_transform(weights)
+print rescaled_weight
+print scaler.get_params()
 
 ### in the "clustering with 3 features" part of the mini-project,
 ### you'll want to change this line to 
