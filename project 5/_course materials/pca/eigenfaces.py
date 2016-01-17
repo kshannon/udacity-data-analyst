@@ -98,6 +98,8 @@ print "done in %0.3fs" % (time() - t0)
 print "Best estimator found by grid search:"
 print clf.best_estimator_
 
+print "explained variance ratio: ", pca.explained_variance_ratio_
+
 
 ###############################################################################
 # Quantitative evaluation of the model quality on the test set
