@@ -1,0 +1,38 @@
+GaussianNB()
+	Accuracy: 0.71687	Precision: 0.23571	Recall: 0.50100	F1: 0.32059	F2: 0.40895
+	Total predictions: 15000	True positives: 1002	False positives: 3249	False negatives:  998	True negatives: 9751
+
+GaussianNB()
+	Accuracy: 0.71687	Precision: 0.23571	Recall: 0.50100	F1: 0.32059	F2: 0.40895
+	Total predictions: 15000	True positives: 1002	False positives: 3249	False negatives:  998	True negatives: 9751
+
+GaussianNB()
+	Accuracy: 0.71687	Precision: 0.23571	Recall: 0.50100	F1: 0.32059	F2: 0.40895
+	Total predictions: 15000	True positives: 1002	False positives: 3249	False negatives:  998	True negatives: 9751
+
+GaussianNB()
+	Accuracy: 0.71687	Precision: 0.23571	Recall: 0.50100	F1: 0.32059	F2: 0.40895
+	Total predictions: 15000	True positives: 1002	False positives: 3249	False negatives:  998	True negatives: 9751
+
+GaussianNB()
+	Accuracy: 0.71687	Precision: 0.23571	Recall: 0.50100	F1: 0.32059	F2: 0.40895
+	Total predictions: 15000	True positives: 1002	False positives: 3249	False negatives:  998	True negatives: 9751
+
+GaussianNB()
+	Accuracy: 0.71687	Precision: 0.23571	Recall: 0.50100	F1: 0.32059	F2: 0.40895
+	Total predictions: 15000	True positives: 1002	False positives: 3249	False negatives:  998	True negatives: 9751
+
+DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=None,
+            max_features=None, max_leaf_nodes=None, min_samples_leaf=1,
+            min_samples_split=2, min_weight_fraction_leaf=0.0,
+            presort=False, random_state=0, splitter='best')
+	Accuracy: 0.80460	Precision: 0.26406	Recall: 0.26050	F1: 0.26227	F2: 0.26121
+	Total predictions: 15000	True positives:  521	False positives: 1452	False negatives: 1479	True negatives: 11548
+
+DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=None,
+            max_features=None, max_leaf_nodes=None, min_samples_leaf=1,
+            min_samples_split=2, min_weight_fraction_leaf=0.0,
+            presort=False, random_state=0, splitter='best')
+	Accuracy: 0.80460	Precision: 0.26406	Recall: 0.26050	F1: 0.26227	F2: 0.26121
+	Total predictions: 15000	True positives:  521	False positives: 1452	False negatives: 1479	True negatives: 11548
+
