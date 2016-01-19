@@ -1,11 +1,13 @@
 #!/usr/bin/python
 
-import sys
+import sys  #sys.exit()
 import pickle
 sys.path.append("../tools/")
+import matplotlib.pyplot as plt
 
 from feature_format import featureFormat, targetFeatureSplit
 from tester import dump_classifier_and_data
+from sklearn.preprocessing import Imputer
 
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
@@ -16,7 +18,40 @@ features_list = ['poi','salary'] # You will need to use more features
 with open("final_project_dataset.pkl", "r") as data_file:
     data_dict = pickle.load(data_file)
 
+
 ### Task 2: Remove outliers
+for k,v in data_dict.iteritems():
+	if k == "THE TRAVEL AGENCY IN THE PARK": continue #print v['poi']
+	if k == "TOTAL": continue #print v
+# remove TOTAL and THE TRAVEL AGENCY IN THE PARK data as an outlier. 
+del data_dict['TOTAL']
+del data_dict['THE TRAVEL AGENCY IN THE PARK']
+
+# returning simple info about data set: NaNs features and data points
+num_NaNs = 0
+num_data_points = 0
+for k,v in data_dict.iteritems():
+	if k == 'LOCKHART EUGENE E': print v
+	for key, value in v.iteritems():
+		num_data_points += 1
+		num_features = len(v)
+		if value == 'NaN':
+			num_NaNs += 1
+
+print ("Number of People under Investigation: %s, \
+		Number of Data Points: %s, Number of Features: %s") % (
+			len(data_dict), num_data_points, num_features)
+print "Percentage of data points as NaNs: %s" % (num_NaNs/float(num_data_points))
+
+# Data Imputation using Mediun vs Mean or linear regression for NaN values
+# Use SkLearn Data imputate: 
+# http://scikit-learn.org/stable/modules/preprocessing.html#imputation-of-missing-values
+
+
+
+
+
+
 ### Task 3: Create new feature(s)
 ### Store to my_dataset for easy export below.
 my_dataset = data_dict
@@ -52,4 +87,23 @@ features_train, features_test, labels_train, labels_test = \
 ### that the version of poi_id.py that you submit can be run on its own and
 ### generates the necessary .pkl files for validating your results.
 
-dump_classifier_and_data(clf, my_dataset, features_list)
+# Commented out pickle pickle to make running easier
+#dump_classifier_and_data(clf, my_dataset, features_list)
+
+# Bell Sound When Done
+print ('\a')
+
+
+
+# for point in data:
+#     salary = point[0]
+#     bonus = point[1]
+#     matplotlib.pyplot.scatter( salary, bonus )
+
+# matplotlib.pyplot.xlabel("salary")
+# matplotlib.pyplot.ylabel("bonus")
+# plt.show()
+
+
+
+
