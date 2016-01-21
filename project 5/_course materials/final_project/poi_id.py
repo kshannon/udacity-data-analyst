@@ -10,6 +10,9 @@ from feature_format import featureFormat, targetFeatureSplit
 from tester import dump_classifier_and_data
 from sklearn import preprocessing
 
+from sklearn.naive_bayes import GaussianNB
+from sklearn.tree import DecisionTreeClassifier
+
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
 ### The first feature must be "poi".
@@ -73,7 +76,42 @@ print "Percentage of data points as NaNs: %s" % (num_NaNs/float(num_data_points)
 
 ### Task 3: Create new feature(s)
 
-# to do.....
+### Trying to create 4 new features:
+
+# [1] is_director : making 'director' a boolean. if value is >0 or not NaN then = 1
+# [2] poi_email_interaction : combining 'from_poi' with 'to_poi'
+# [3] poi_email_reciept_interaction : same as above but adding 'shared_reciept_with_poi'
+# [4] adj_compensation: I am combining a bunch of financial features and MinMaxing it to 0-1
+#	features include: 'salary', 'total_payments', 'exercised_stock_options', 'bonus', 
+#					  'long_term_incentive', 'total_stock_value'.
+
+
+for k,v in data_dict.iteritems():
+	v['is_director'] = 0
+	v['poi_email_interaction'] = 0
+	v['poi_email_reciept_interaction'] = 0
+	v['adj_compensation'] = 0
+
+
+for k,v in data_dict.iteritems():
+	for key,value in v.iteritems():
+		if key == 'director_fees' and value != 'NaN' or value > 0: 
+			v['is_director'] = 1		
+		
+		if (key == 'from_this_person_to_poi' or key == 'from_poi_to_this_person') \
+			and value != 'NaN':
+			v['poi_email_interaction'] += value
+		
+		if (key == 'from_this_person_to_poi' or key == 'from_poi_to_this_person' \
+			or key == 'shared_receipt_with_poi') and value != 'NaN':
+			v['poi_email_reciept_interaction'] += value
+
+		if (key == 'salary' or key == 'total_payments' or key == 'exercised_stock_options' \
+			or key == 'bonus' or key == 'long_term_incentive' or key == 'total_stock_value') \
+			and value != 'NaN':
+			v['adj_compensation'] += value
+
+
 
 ### Store to my_dataset for easy export below.
 my_dataset = data_dict
@@ -82,9 +120,6 @@ my_dataset = data_dict
 data = featureFormat(my_dataset, features_list, sort_keys = True, remove_NaN = True)
 labels, features = targetFeatureSplit(data)
 
-print np.shape(features)
-print features[100]
-print labels
 
 
 
