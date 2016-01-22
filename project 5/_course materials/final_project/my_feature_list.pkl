@@ -37,4 +37,16 @@ aS'long_term_incentive'
 p18
 aS'from_poi_to_this_person'
 p19
+aS'from_poi_to_this_person_fraction'
+p20
+aS'from_this_person_to_poi_fraction'
+p21
+aS'is_director'
+p22
+aS'poi_email_interaction'
+p23
+aS'poi_email_reciept_interaction'
+p24
+aS'adj_compensation'
+p25
 a.

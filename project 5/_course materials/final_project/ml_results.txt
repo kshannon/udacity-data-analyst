@@ -1,38 +1,95 @@
+['poi', 'salary', 'to_messages', 'deferral_payments', 'total_payments', 'exercised_stock_options', 'bonus', 'restricted_stock', 'shared_receipt_with_poi', 'restricted_stock_deferred', 'total_stock_value', 'expenses', 'loan_advances', 'from_messages', 'from_this_person_to_poi', 'director_fees', 'deferred_income', 'long_term_incentive', 'from_poi_to_this_person', 'from_poi_to_this_person_fraction', 'from_this_person_to_poi_fraction', 'is_director', 'poi_email_interaction', 'poi_email_reciept_interaction', 'adj_compensation']
 GaussianNB()
-	Accuracy: 0.71687	Precision: 0.23571	Recall: 0.50100	F1: 0.32059	F2: 0.40895
-	Total predictions: 15000	True positives: 1002	False positives: 3249	False negatives:  998	True negatives: 9751
+	Accuracy: 0.77340	Precision: 0.25703	Recall: 0.37000	F1: 0.30334	F2: 0.34010
+	Total predictions: 15000	True positives:  740	False positives: 2139	False negatives: 1260	True negatives: 10861
 
 GaussianNB()
-	Accuracy: 0.71687	Precision: 0.23571	Recall: 0.50100	F1: 0.32059	F2: 0.40895
-	Total predictions: 15000	True positives: 1002	False positives: 3249	False negatives:  998	True negatives: 9751
+	Accuracy: 0.77340	Precision: 0.25703	Recall: 0.37000	F1: 0.30334	F2: 0.34010
+	Total predictions: 15000	True positives:  740	False positives: 2139	False negatives: 1260	True negatives: 10861
 
+Number of People under Investigation: 143,			Number of Data Points: 3861, Number of Features: 27
+Percentage of data points as NaNs: 0.340326340326
 GaussianNB()
-	Accuracy: 0.71687	Precision: 0.23571	Recall: 0.50100	F1: 0.32059	F2: 0.40895
-	Total predictions: 15000	True positives: 1002	False positives: 3249	False negatives:  998	True negatives: 9751
+	Accuracy: 0.77340	Precision: 0.25703	Recall: 0.37000	F1: 0.30334	F2: 0.34010
+	Total predictions: 15000	True positives:  740	False positives: 2139	False negatives: 1260	True negatives: 10861
 
-GaussianNB()
-	Accuracy: 0.71687	Precision: 0.23571	Recall: 0.50100	F1: 0.32059	F2: 0.40895
-	Total predictions: 15000	True positives: 1002	False positives: 3249	False negatives:  998	True negatives: 9751
-
-GaussianNB()
-	Accuracy: 0.71687	Precision: 0.23571	Recall: 0.50100	F1: 0.32059	F2: 0.40895
-	Total predictions: 15000	True positives: 1002	False positives: 3249	False negatives:  998	True negatives: 9751
-
-GaussianNB()
-	Accuracy: 0.71687	Precision: 0.23571	Recall: 0.50100	F1: 0.32059	F2: 0.40895
-	Total predictions: 15000	True positives: 1002	False positives: 3249	False negatives:  998	True negatives: 9751
-
-DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=None,
+Number of People under Investigation: 143,			Number of Data Points: 3861, Number of Features: 27
+Percentage of data points as NaNs: 0.340326340326
+['poi', 'salary', 'to_messages', 'deferral_payments', 'total_payments', 'exercised_stock_options', 'bonus', 'restricted_stock', 'shared_receipt_with_poi', 'restricted_stock_deferred', 'total_stock_value', 'expenses', 'loan_advances', 'from_messages', 'from_this_person_to_poi', 'director_fees', 'deferred_income', 'long_term_incentive', 'from_poi_to_this_person', 'from_poi_to_this_person_fraction', 'from_this_person_to_poi_fraction', 'is_director', 'poi_email_interaction', 'poi_email_reciept_interaction', 'adj_compensation']
+
+Pipeline(steps=[('select', SelectKBest(k=10, score_func=<function f_classif at 0x104cd3410>)), ('scaler', StandardScaler(copy=True, with_mean=True, with_std=True)), ('pca', PCA(copy=True, n_components=None, whiten=False)), ('dt', DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=None,
             max_features=None, max_leaf_nodes=None, min_samples_leaf=1,
             min_samples_split=2, min_weight_fraction_leaf=0.0,
-            presort=False, random_state=0, splitter='best')
-	Accuracy: 0.80460	Precision: 0.26406	Recall: 0.26050	F1: 0.26227	F2: 0.26121
-	Total predictions: 15000	True positives:  521	False positives: 1452	False negatives: 1479	True negatives: 11548
+            presort=False, random_state=None, splitter='best'))])
+	Accuracy: 0.79073	Precision: 0.23719	Recall: 0.25700	F1: 0.24670	F2: 0.25278
+	Total predictions: 15000	True positives:  514	False positives: 1653	False negatives: 1486	True negatives: 11347
 
-DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=None,
+
+
+Pipeline(steps=[('select', SelectKBest(k=10, score_func=<function f_classif at 0x104dd3410>)), ('scaler', MinMaxScaler(copy=True, feature_range=(0, 1))), ('pca', PCA(copy=True, n_components=2, whiten=False)), ('dt', DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=None,
             max_features=None, max_leaf_nodes=None, min_samples_leaf=1,
             min_samples_split=2, min_weight_fraction_leaf=0.0,
-            presort=False, random_state=0, splitter='best')
-	Accuracy: 0.80460	Precision: 0.26406	Recall: 0.26050	F1: 0.26227	F2: 0.26121
-	Total predictions: 15000	True positives:  521	False positives: 1452	False negatives: 1479	True negatives: 11548
+            presort=False, random_state=None, splitter='best'))])
+	Accuracy: 0.79440	Precision: 0.21682	Recall: 0.20750	F1: 0.21206	F2: 0.20930
+	Total predictions: 15000	True positives:  415	False positives: 1499	False negatives: 1585	True negatives: 11501
+
+Number of People under Investigation: 143,			Number of Data Points: 3861, Number of Features: 27
+Percentage of data points as NaNs: 0.340326340326
+
+GridSearchCV(cv=None, error_score='raise',
+       estimator=Pipeline(steps=[('select', SelectKBest(k=10, score_func=<function f_classif at 0x104edfc08>)), ('scaler', MinMaxScaler(copy=True, feature_range=(0, 1))), ('pca', PCA(copy=True, n_components=None, whiten=False)), ('dt', DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=N...t=2, min_weight_fraction_leaf=0.0,
+            presort=False, random_state=None, splitter='best'))]),
+       fit_params={}, iid=True, n_jobs=1,
+       param_grid={'dt__criterion': ('entropy', 'gini')},
+       pre_dispatch='2*n_jobs', refit=True, scoring=None, verbose=0)
+	Accuracy: 0.79840	Precision: 0.25313	Recall: 0.26250	F1: 0.25773	F2: 0.26057
+	Total predictions: 15000	True positives:  525	False positives: 1549	False negatives: 1475	True negatives: 11451
+
+
+GridSearchCV(cv=None, error_score='raise',
+       estimator=Pipeline(steps=[('select', SelectKBest(k=10, score_func=<function f_classif at 0x104fe4c08>)), ('scaler', MinMaxScaler(copy=True, feature_range=(0, 1))), ('pca', PCA(copy=True, n_components=None, whiten=False)), ('dt', DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=N...t=2, min_weight_fraction_leaf=0.0,
+            presort=False, random_state=None, splitter='best'))]),
+       fit_params={}, iid=True, n_jobs=1,
+       param_grid={'dt__criterion': ('entropy', 'gini')},
+       pre_dispatch='2*n_jobs', refit=True, scoring=None, verbose=0)
+	Accuracy: 0.79993	Precision: 0.25621	Recall: 0.26300	F1: 0.25956	F2: 0.26161
+	Total predictions: 15000	True positives:  526	False positives: 1527	False negatives: 1474	True negatives: 11473
+
+
+GridSearchCV(cv=None, error_score='raise',
+       estimator=Pipeline(steps=[('select', SelectKBest(k=10, score_func=<function f_classif at 0x104ddbc08>)), ('scaler', StandardScaler(copy=True, with_mean=True, with_std=True)), ('pca', PCA(copy=True, n_components=None, whiten=False)), ('dt', DecisionTreeClassifier(class_weight=None, criterion='gini', ...t=2, min_weight_fraction_leaf=0.0,
+            presort=False, random_state=None, splitter='best'))]),
+       fit_params={}, iid=True, n_jobs=1,
+       param_grid={'dt__criterion': ('entropy', 'gini')},
+       pre_dispatch='2*n_jobs', refit=True, scoring=None, verbose=0)
+	Accuracy: 0.79433	Precision: 0.24154	Recall: 0.25350	F1: 0.24738	F2: 0.25101
+	Total predictions: 15000	True positives:  507	False positives: 1592	False negatives: 1493	True negatives: 11408
+
+
+GridSearchCV(cv=None, error_score='raise',
+       estimator=Pipeline(steps=[('select', SelectKBest(k=10, score_func=<function f_classif at 0x105edbc08>)), ('scaler', StandardScaler(copy=True, with_mean=True, with_std=True)), ('pca', PCA(copy=True, n_components=None, whiten=False)), ('dt', DecisionTreeClassifier(class_weight=None, criterion='gini', ...t=2, min_weight_fraction_leaf=0.0,
+            presort=False, random_state=None, splitter='best'))]),
+       fit_params={}, iid=True, n_jobs=1,
+       param_grid={'dt__criterion': ('entropy', 'gini')},
+       pre_dispatch='2*n_jobs', refit=True, scoring=None, verbose=0)
+	Accuracy: 0.79460	Precision: 0.24565	Recall: 0.26100	F1: 0.25309	F2: 0.25778
+	Total predictions: 15000	True positives:  522	False positives: 1603	False negatives: 1478	True negatives: 11397
+
+
+GridSearchCV(cv=None, error_score='raise',
+       estimator=Pipeline(steps=[('select', SelectKBest(k=3, score_func=<function f_classif at 0x1060e3c08>)), ('scaler', StandardScaler(copy=True, with_mean=True, with_std=True)), ('pca', PCA(copy=True, n_components=None, whiten=False)), ('dt', DecisionTreeClassifier(class_weight=None, criterion='gini', m...t=2, min_weight_fraction_leaf=0.0,
+            presort=False, random_state=None, splitter='best'))]),
+       fit_params={}, iid=True, n_jobs=1,
+       param_grid={'dt__criterion': ('entropy', 'gini')},
+       pre_dispatch='2*n_jobs', refit=True, scoring=None, verbose=0)
+	Accuracy: 0.79720	Precision: 0.23033	Recall: 0.22250	F1: 0.22635	F2: 0.22402
+	Total predictions: 15000	True positives:  445	False positives: 1487	False negatives: 1555	True negatives: 11513
+
+
+GridSearchCV(cv=None, error_score='raise',
+       estimator=Pipeline(steps=[('select', SelectKBest(k=8, score_func=<function f_classif at 0x104cd6c08>)), ('scaler', StandardScaler(copy=True, with_mean=True, with_std=True)), ('pca', PCA(copy=True, n_components=None, whiten=False)), ('gNB', GaussianNB())]),
+       fit_params={}, iid=True, n_jobs=1, param_grid={},
+       pre_dispatch='2*n_jobs', refit=True, scoring=None, verbose=0)
+	Accuracy: 0.81160	Precision: 0.26427	Recall: 0.23150	F1: 0.24680	F2: 0.23739
+	Total predictions: 15000	True positives:  463	False positives: 1289	False negatives: 1537	True negatives: 11711
 
