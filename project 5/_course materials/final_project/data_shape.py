@@ -1,40 +1,26 @@
-'''
-Takes in a data dictionary object and appends new engineered
-features to it s a {key : value} pair. 
-'''
 
-
-# Trying to create 6 new features:
-# [1] is_director : making 'director' a boolean. if value is >0 or not NaN then = 1
-# [2] poi_email_interaction : combining 'from_poi' with 'to_poi'
-# [3] poi_email_reciept_interaction : same as above but adding 'shared_reciept_with_poi'
-# [4] adj_compensation: I am combining a bunch of financial features and MinMaxing it to 0-1
-#	features include: 'salary', 'total_payments', 'exercised_stock_options', 'bonus', 
-#					  'long_term_incentive', 'total_stock_value'.
 
 
 def outlier_cleaning(data_dict):
 	'''
-	https://www.python.org/dev/peps/pep-0257/    ref here for sprucing this up....
+	This function can be used to delete outliers from the data set.
 	'''
-	### remove TOTAL and THE TRAVEL AGENCY IN THE PARK data as outliers.
-	### EUGENE had no data, all are NaN except for {'poi':'False'}. Remove him as well.
+
 	del data_dict['TOTAL']
 	del data_dict['THE TRAVEL AGENCY IN THE PARK']
 	del data_dict['LOCKHART EUGENE E']
 
 
-
 def engineered_features(data_dict):
 	'''
-	describe: data_dict
-	talk about arguments and return types 
-
+	This function creates new features for the Enron data set and inserts
+	the new features into to the data dict.
 	'''
 
-	# creating {key : value} for new features and adding them to data set
+	# creating {key : value} for new features and adding them to data set. This is done
+	# so that in the next double for loop I am not changing the data dict that I am
+	# iterating over.
 	for k,v in data_dict.iteritems():
-		v['is_director'] = 0
 		v['poi_email_interaction'] = 0
 		v['poi_email_reciept_interaction'] = 0
 		v['adj_compensation'] = 0
@@ -43,9 +29,7 @@ def engineered_features(data_dict):
 
 	# 
 	for k,v in data_dict.iteritems():
-		for key,value in v.iteritems():
-			if key == 'director_fees' and value != 'NaN' and value > 0: 
-				v['is_director'] = 1		
+		for key,value in v.iteritems():		
 			
 			if (key == 'from_this_person_to_poi' or key == 'from_poi_to_this_person') \
 				and value != 'NaN':
@@ -54,6 +38,11 @@ def engineered_features(data_dict):
 			if (key == 'from_this_person_to_poi' or key == 'from_poi_to_this_person' \
 				or key == 'shared_receipt_with_poi') and value != 'NaN':
 				v['poi_email_reciept_interaction'] += value
+				#print "recepit interaction add: ", v['poi_email_reciept_interaction']
+
+			if (key == 'shared_receipt_with_poi') and value != 'NaN':
+				v['poi_email_reciept_interaction'] = v['poi_email_reciept_interaction'] * value
+				#print "recepit interaction multiply: ", v['poi_email_reciept_interaction']
 
 			if (key == 'salary' or key == 'total_payments' or key == 'exercised_stock_options' \
 				or key == 'bonus' or key == 'long_term_incentive' or key == 'total_stock_value') \
@@ -67,21 +56,43 @@ def engineered_features(data_dict):
 			if key == 'from_messages' and value != 'NaN' and value > 0:
 				v['from_this_person_to_poi_fraction'] = int(v['from_this_person_to_poi'])/float(value)
 
+		print "poi email interacion", v['poi_email_interaction']
+		print "reciept", v['poi_email_reciept_interaction']
+
+
+# easily print out more info by changing around "if" statements in the double for loop.
 def data_dict_info(data_dict):
 	'''
+	Prints high level information about Enron Financial data set.
+	E.g. num of NaNs, \% of NaNs per feature, num of data points etc.
 	'''
-	## returning simple info about data set: NaNs features and data points
+	#loop through data set's dict and print out information.
 	num_NaNs = 0
 	num_data_points = 0
+	num_poi = 0
+	NaN_dict = {}
 	for k,v in data_dict.iteritems():
 		for key, value in v.iteritems():
-			#if key == 'poi' and value == True: print "AHHHHH YEAHHHHH"
 			num_data_points += 1
 			num_features = len(v)
 			if value == 'NaN':
 				num_NaNs += 1
+			if key == 'poi' and value == 1:
+				num_poi += 1
+			if key not in NaN_dict:
+				NaN_dict[key] = 0
+			if key in NaN_dict and value == "NaN":
+				NaN_dict[key] += 1
 
-	# print ("Number of People under Investigation: %s,\
-	# 		Number of Data Points: %s, Number of Features: %s") % (
-	# 			len(data_dict), num_data_points, num_features)
-	# print "Percentage of data points as NaNs: %s" % (num_NaNs/float(num_data_points))
+	print ("Number of People under Investigation: %s,\
+			Number of Data Points: %s, Number of Features: %s") % (
+				len(data_dict), num_data_points, num_features)
+	print "Percentage of data points as NaNs: %s" % (num_NaNs/float(num_data_points))
+	print "Num of POIs: ", num_poi
+
+	# turn all values in this dict to percentages. The values are the number of NaNs
+	# found in the data set.
+	for k,v in NaN_dict.iteritems():
+		NaN_dict[k] = "{0:.2f}".format((v/float(143)*100)) + "%"
+
+	print NaN_dict
