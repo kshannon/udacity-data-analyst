@@ -4,9 +4,11 @@ import sys  #sys.exit()
 import pickle
 sys.path.append("../tools/")
 import matplotlib.pyplot as plt
+import seaborn as sns
 import numpy as np
 import pandas as pd
 
+from data_viz import dict_to_dataframe
 from data_shape import engineered_features, outlier_cleaning, data_dict_info
 from feature_format import featureFormat, targetFeatureSplit
 from tester import dump_classifier_and_data
@@ -45,9 +47,9 @@ features_list = ["poi",
 				"deferred_income",
 				"long_term_incentive",
 				"from_poi_to_this_person",
+				# Engineered Features:
 				"from_poi_to_this_person_fraction",
 				"from_this_person_to_poi_fraction",
-				"is_director",
 				"poi_email_interaction",
 				"poi_email_reciept_interaction",
 				"adj_compensation"]
@@ -62,11 +64,17 @@ with open("final_project_dataset.pkl", "r") as data_file:
 outlier_cleaning(data_dict)
 
 ##################### Task 3: Create new feature(s) #####################
-# Function that adds new features to data_dict
-# calls add_feature 
-engineered_features(data_dict)
 
-data_dict_info(data_dict)
+# Function that adds new features to data_dict
+engineered_features(data_dict) #from data_shape.py
+
+# prints out useful info about the data set
+data_dict_info(data_dict) #from data_shape.py
+
+# creates a PANDAS df to visualize data
+dict_to_dataframe(data_dict) #from data_viz.py
+
+sys.exit()
 
 
 ### Store to my_dataset for easy export below.
@@ -75,6 +83,7 @@ my_dataset = data_dict
 ### Extract features and labels from dataset for local testing
 data = featureFormat(my_dataset, features_list, sort_keys = True, remove_NaN = True)
 labels, features = targetFeatureSplit(data)
+
 
 
 ##################### Task 4: Try a varity of classifiers #####################
@@ -89,8 +98,8 @@ labels, features = targetFeatureSplit(data)
 ### stratified shuffle split cross validation. For more info: 
 ### http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedShuffleSplit.html
 
-
-clf = Pipeline([	
+############ -- Gaussian NB [start] -- ############
+gaussianNB_pipeline = Pipeline([	
 			#('select', SelectKBest(score_func=f_classif)),
 			('select', SelectKBest(k=8)),
 			#('scaler', MinMaxScaler()),
@@ -103,8 +112,23 @@ clf = Pipeline([
 #param_dict = {'dt__criterion' : ('entropy', 'gini')}
 param_dict = {}
 
+clf = GridSearchCV(gaussianNB_pipeline, param_dict)
+############ -- Gaussian NB [end] -- ############
 
-clf = GridSearchCV(clf, param_dict)
+
+############ -- Decision Tree [start] -- ############
+
+############ -- Decision Tree [end] -- ############
+
+
+
+############ -- Linear SVC [start] -- ############
+
+#http://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html
+
+############ -- Linear SVC [end] -- ############
+
+
 
 
 
@@ -112,9 +136,6 @@ clf = GridSearchCV(clf, param_dict)
 # # indices = np.argsort(importances)[::-1]
 # # for f in range(clf.n_features_):
 # # 	print ("%2d) %-*s %f" % ( f + 1, 30, features_list[f + 1], importances[indices[f]]))
-
-
-
 
 
 
@@ -128,7 +149,7 @@ clf = GridSearchCV(clf, param_dict)
 dump_classifier_and_data(clf, my_dataset, features_list)
 
 # Bell Sound When Done
-print ('\a')
+#print ('\a')
 
 
 

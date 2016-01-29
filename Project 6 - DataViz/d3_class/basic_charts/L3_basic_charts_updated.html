@@ -6,36 +6,12 @@
     <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
     
     <style>
+      circle.dimple-series-1 {
+        fill: red;
+      }
+
       h2 {
-        color: black;
         text-align: center;
-      }
-
-      .axis {
-        font-family: arial;
-        font-size: 0.6em;
-      }
-
-      path {
-        fill: none;
-        stroke: black;
-        stroke-width: 2px;
-      }
-
-      .tick {
-        fill: none;
-        stroke: black;
-      }
-
-      circle {
-        opacity: 0.4;
-        stroke: none;
-      }
-
-      .line_plot {
-        fill: none;
-        stroke: #4eb0bb;
-        stroke-width: 1px;
       }
     </style>
 
@@ -51,8 +27,6 @@
               width = 1400 - margin,
               height = 600 - margin;
 
-          var radius = 3;
-          var color = "blue";
           // d3.select("body")
           //   .append("h2")
           //   .text("World Cup Attendance")
@@ -118,32 +92,14 @@
 
           d3.selectAll("circle")
             .attr("cx", function(d) {
-                //debugger;
                 return time_scale(d["date"]);
             })
             .attr("cy", function(d) {
                 return count_scale(d["attendance"]);
             })
-            .attr("r", function(d) {
-              if (d['team1'] === d['home'] || d['team2'] === d['home'])
-              {
-                return 5;
-              }
-              else
-              {
-                return radius;
-              }})
-
-            .attr("fill", function(d) {
-              if (d['team1'] === d['home'] || d['team2'] === d['home'])
-              {
-                return "red";
-              }
-              else
-              {
-                return "blue";
-              }});
-      };
+            .attr("r", radius)
+            .attr("fill", color);
+        };
 
     </script>
   </head>

@@ -56,8 +56,8 @@ def engineered_features(data_dict):
 			if key == 'from_messages' and value != 'NaN' and value > 0:
 				v['from_this_person_to_poi_fraction'] = int(v['from_this_person_to_poi'])/float(value)
 
-		print "poi email interacion", v['poi_email_interaction']
-		print "reciept", v['poi_email_reciept_interaction']
+		# print "poi email interacion", v['poi_email_interaction']
+		# print "reciept", v['poi_email_reciept_interaction']
 
 
 # easily print out more info by changing around "if" statements in the double for loop.
@@ -84,15 +84,15 @@ def data_dict_info(data_dict):
 			if key in NaN_dict and value == "NaN":
 				NaN_dict[key] += 1
 
-	print ("Number of People under Investigation: %s,\
-			Number of Data Points: %s, Number of Features: %s") % (
-				len(data_dict), num_data_points, num_features)
-	print "Percentage of data points as NaNs: %s" % (num_NaNs/float(num_data_points))
-	print "Num of POIs: ", num_poi
+	# print ("Number of People under Investigation: %s,\
+	# 		Number of Data Points: %s, Number of Features: %s") % (
+	# 			len(data_dict), num_data_points, num_features)
+	# print "Percentage of data points as NaNs: %s" % (num_NaNs/float(num_data_points))
+	# print "Num of POIs: ", num_poi
 
 	# turn all values in this dict to percentages. The values are the number of NaNs
 	# found in the data set.
 	for k,v in NaN_dict.iteritems():
 		NaN_dict[k] = "{0:.2f}".format((v/float(143)*100)) + "%"
 
-	print NaN_dict
+	#print NaN_dict

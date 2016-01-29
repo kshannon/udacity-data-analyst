@@ -1,0 +1,18 @@
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+import pandas as pd
+
+def dict_to_dataframe(data_dict):
+	pass
+
+
+# data = df
+# f, ax = plt.subplots(figsize=(9, 9))
+# cmap = sns.blend_palette(["#00008B", "#6A5ACD", "#F0F8FF",
+#                           "#FFE6F8", "#C71585", "#8B0000"], as_cmap=True)
+# sns.corrplot(data, annot=False, sig_stars=False,
+#              diag_names=False, cmap=cmap, ax=ax)
+# sns.plt.title('Figure 6: Correlation Matrix Heatmap')
+# f.tight_layout()
+# sns.despine()
