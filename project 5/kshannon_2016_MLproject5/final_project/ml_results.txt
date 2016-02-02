@@ -355,3 +355,5 @@ GridSearchCV(cv=None, error_score='raise',
        pre_dispatch='2*n_jobs', refit=True, scoring=None, verbose=0)
 	Accuracy: 0.84427	Precision: 0.40289	Recall: 0.34850	F1: 0.37373	F2: 0.35817
 	Total predictions: 15000	True positives:  697	False positives: 1033	False negatives: 1303	True negatives: 11967
+
+

@@ -1,0 +1,12 @@
+References
+
+1. https://www.oreilly.com/learning/handling-missing-data imputation
+2. http://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues PCA
+3. Python Machine Learning by Raschka
+4. ISL by Hastie et al.
+5. https://discussions.udacity.com/t/using-pipeline-precision-recall-have-been-decreased/45992/5
+6. SkLearn documentation
+7. PANDAS documentation
+8. Seaborn documentation
+9. MatPlotLib documentation
+10. http://stats.stackexchange.com/questions/53/pca-on-correlation-or-covariance

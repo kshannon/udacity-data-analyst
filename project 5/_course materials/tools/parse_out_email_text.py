@@ -42,8 +42,6 @@ def parseOutText(f):
     
     singles = [stemmer.stem(word) for word in split_text]
     words = (" ").join(singles)
-    print words
-
 
     return words
 
