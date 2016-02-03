@@ -356,4 +356,4 @@ GridSearchCV(cv=None, error_score='raise',
 	Accuracy: 0.84427	Precision: 0.40289	Recall: 0.34850	F1: 0.37373	F2: 0.35817
 	Total predictions: 15000	True positives:  697	False positives: 1033	False negatives: 1303	True negatives: 11967
 
-
+['poi', 'salary', 'total_payments', 'exercised_stock_options', 'restricted_stock', 'expenses', 'director_fees', 'deferred_income', 'from_poi_to_this_person_fraction', 'from_this_person_to_poi_fraction', 'poi_email_reciept_interaction']
