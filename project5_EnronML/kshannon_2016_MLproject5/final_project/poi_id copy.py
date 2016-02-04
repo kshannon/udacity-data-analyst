@@ -21,6 +21,9 @@ from sklearn.feature_selection import SelectKBest, f_classif
 from sklearn.decomposition import PCA
 from sklearn.grid_search import GridSearchCV
 from sklearn.cross_validation import StratifiedShuffleSplit
+#from sklearn.metrics import recall_score
+#from sklearn.metrics import precision_score
+#from sklearn.metrics import f1_score
 from sklearn.pipeline import Pipeline
 
 from sklearn.naive_bayes import GaussianNB
@@ -83,12 +86,17 @@ engineered_features(data_dict)
 my_dataset = data_dict
 
 ### Extract features and labels from dataset for local testing
+
 data = featureFormat(my_dataset, features_list, sort_keys = True, remove_NaN = True)
 labels, features = targetFeatureSplit(data)
 
 ### X/features is a list of lists containing the data
 ### y/labels are the classifier labels for POI or non POI
+features_new = SelectKBest(f_classif).fit(features, labels)
+print features_new.scores_
+print features_new.get_support()
 
+sys.exit()
 
 ##################### Task 4: Try a varity of classifiers #####################
 
@@ -163,7 +171,39 @@ def make_pipeline(select=None, scaler=None, pca=None, clf=None):
 				])
 	return pipeline
 
+
 pipeline = make_pipeline(pca=PCA(), clf=DecisionTreeClassifier(max_depth=10, min_samples_split=10, min_samples_leaf=3))
+
+
+
+
+def validate(estimator=None, param_grid=None, folds=1000):
+    '''
+    Validates a classifier using StratifiedShuffleSplit() 
+        
+    Metrics include: F1-score, recall, and percision
+       
+    Args:
+        clf: a SkLearn classifier
+        labels_df: PD_dataframe of labels to predict.
+        features_df: PD_dataframe of features used to predict labels.
+        n_iter: Number of random cross validation runs to average over.
+        test_size: The percentage size of the test set to split off during each
+            run.
+    Returns:
+        Prints to stdout the evaluation average evaluation metrics for F1
+            score, recall, and precission.
+    '''
+
+    param_dict = {}
+
+    cv = StratifiedShuffleSplit(labels, folds, random_state = 42)
+    clf = GridSearchCV(pipeline, param_dict, cv=cv)
+
+validate(clf=pipeline, labels_df=labels, features_df=features)
+
+
+
 
 
 
@@ -202,6 +242,7 @@ param_dict = {}
 
 
 ##################### Task 6: Dump your classifier #####################
+
 features_list = ["poi", 
 				"salary",
 				#"to_messages",
@@ -229,6 +270,8 @@ features_list = ["poi",
 				#"adj_compensation"]
 clf = pipeline
 
+### create pickle files for tester.py
+dump_classifier_and_data(clf, my_dataset, features_list)
 
 
 
