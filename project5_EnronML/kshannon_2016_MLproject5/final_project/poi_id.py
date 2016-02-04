@@ -88,10 +88,16 @@ my_dataset = data_dict
 data = featureFormat(my_dataset, features_list, sort_keys = True, remove_NaN = True)
 labels, features = targetFeatureSplit(data)
 
-
+### function that can be used to select features
 def feature_select(clf, feature, label):
 	'''
-	Uses a classifier to select best features 
+	Args:
+		1. clf: select a classifier that selects best features.
+		2. feature: features from data set.
+		3. label: classification labels.
+
+	Function that selects the best features to use and prints all the features 
+	with scores and a boolean value if the feature should be used. 
 	'''
 
 	features_new = clf.fit(feature, label)
@@ -114,6 +120,7 @@ def feature_select(clf, feature, label):
 
 
 ##################### Task 4: Try a varity of classifiers #####################
+
 ### Several baseline classifiers attempted. DecisionTree was the best.
 ### baseline classifiers tried: 
 ### DT out of box
@@ -163,7 +170,9 @@ def feature_select(clf, feature, label):
 ##################### Task 5: Tune your classifier #####################
 
 
-
+### constructs a pipeline and can make use of DummyTransform Class,
+### to bypass chains in the pipeline, possibly making it easier to test
+### different pipeline combinations etc.
 def make_pipeline(select=None, scaler=None, pca=None, clf=None):
 
 	'''
@@ -185,16 +194,21 @@ def make_pipeline(select=None, scaler=None, pca=None, clf=None):
 				])
 	return pipeline
 
-
+### This was the first DT I made when I submitted the Enron Prject, it worked and I
+### want to preserve it and pass it to pickle. 
 old_pipeline = make_pipeline(pca=PCA(), clf=DecisionTreeClassifier(max_depth=10, min_samples_split=10, min_samples_leaf=3))
 
-
+### This is the new Decision Tree pipeline I am making to test out an new
+### implementation of GridSearchCV using cv=StratifiedShuffeSplit() when passing this 
+### pipeline to sss_validate.
 clf = DecisionTreeClassifier(max_depth=10, min_samples_split=10, min_samples_leaf=3)
 select = SelectKBest(f_classif)
 
 new_pipeline = make_pipeline(select=select, pca=PCA(), clf=clf)
 
 
+### takes my pipeline along with a param dict and runs it through a GridSearch and CV to 
+### return the best model and scores along with Recall, Precision and F1
 def sss_validate(estimator, labels_df, features_df, param_dict, folds=None, random_state = None):
     '''
     Validates a classifier using StratifiedShuffleSplit() 
@@ -205,19 +219,75 @@ def sss_validate(estimator, labels_df, features_df, param_dict, folds=None, rand
         estimator: a SkLearn pipeline
         labels_df: PD_dataframe of labels to predict.
         features_df: PD_dataframe of features used to predict labels.
-        folds: Number of rfoldsto perform at cv stage
-        
+        folds: Number of folds to perform at cv stage.
+        random_state: random shuffle state to use during shuffle split
     Returns:
         Prints the evaluation average evaluation metrics for F1
             score, recall, and precission.
     '''
 
-
+    ### inside GridSearchCV() use StratifiedShuffleSplit for CV instead of k3fold
     cv = StratifiedShuffleSplit(labels_df, folds, random_state)
-    
     clf = GridSearchCV(estimator, param_dict, cv=cv)
+    
+    ### ------ code from UDACITY tester.py file ------ ###
+    true_negatives = 0
+    false_negatives = 0
+    true_positives = 0
+    false_positives = 0
+    for train_idx, test_idx in cv: 
+        features_train = []
+        features_test  = []
+        labels_train   = []
+        labels_test    = []
+        for ii in train_idx:
+            features_train.append( features[ii] )
+            labels_train.append( labels[ii] )
+        for jj in test_idx:
+            features_test.append( features[jj] )
+            labels_test.append( labels[jj] )
+
+
     clf.fit(features_df, labels_df)
-    clf.predict(features_df)
+    clf.predict(features_df) #turn this into the .fit below.... then change variables to match and rerun
+    
+    predictions = clf.predict(features_test)
+
+        ### ------ code from UDACITY tester.py file ------ ###
+        for prediction, truth in zip(predictions, labels_test):
+            if prediction == 0 and truth == 0:
+                true_negatives += 1
+            elif prediction == 0 and truth == 1:
+                false_negatives += 1
+            elif prediction == 1 and truth == 0:
+                false_positives += 1
+            elif prediction == 1 and truth == 1:
+                true_positives += 1
+            else:
+                print "Warning: Found a predicted label not == 0 or 1."
+                print "All predictions should take value 0 or 1."
+                print "Evaluating performance for processed predictions:"
+                break
+    try:
+        total_predictions = true_negatives + false_negatives + false_positives + true_positives
+        accuracy = 1.0*(true_positives + true_negatives)/total_predictions
+        precision = 1.0*true_positives/(true_positives+false_positives)
+        recall = 1.0*true_positives/(true_positives+false_negatives)
+        f1 = 2.0 * true_positives/(2*true_positives + false_positives+false_negatives)
+        f2 = (1+2.0*2.0) * precision*recall/(4*precision + recall)
+        print clf
+        print PERF_FORMAT_STRING.format(accuracy, precision, recall, f1, f2, display_precision = 5)
+        print RESULTS_FORMAT_STRING.format(total_predictions, true_positives, false_positives, false_negatives, true_negatives)
+        print ""
+    except:
+        print "Got a divide by zero when trying out:", clf
+        print "Precision or recall may be undefined due to a lack of true positive predicitons."
+
+
+
+
+
+
 
     print clf.grid_scores_
     print clf.best_estimator_
@@ -228,7 +298,7 @@ def sss_validate(estimator, labels_df, features_df, param_dict, folds=None, rand
 
 
 
-
+### create a param dict for to go along with pipeline. These will be passed in sss_validate
 param_dict = {'pca__n_components' : [2,4,6]}
 #param_dict = {'pca__n_components' : [1,2,3,8,9,10]}
 #param_dict = {'dt__max_depth' : [2,3,4,5,6,7,8,9,10,11,12]}
