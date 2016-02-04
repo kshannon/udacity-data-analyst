@@ -21,6 +21,7 @@ from sklearn.feature_selection import SelectKBest, f_classif
 from sklearn.decomposition import PCA
 from sklearn.grid_search import GridSearchCV
 from sklearn.cross_validation import StratifiedShuffleSplit
+from sklearn.metrics import recall_score, precision_score, f1_score
 from sklearn.pipeline import Pipeline
 
 from sklearn.naive_bayes import GaussianNB
@@ -51,7 +52,7 @@ features_list = ["poi",
 				"deferred_income",
 				"long_term_incentive",
 				"from_poi_to_this_person",
-				"Engineered Features:"
+				#"Engineered Features:"
 				"from_poi_to_this_person_fraction",
 				"from_this_person_to_poi_fraction",
 				"poi_email_interaction",
@@ -83,12 +84,35 @@ engineered_features(data_dict)
 my_dataset = data_dict
 
 ### Extract features and labels from dataset for local testing
+
 data = featureFormat(my_dataset, features_list, sort_keys = True, remove_NaN = True)
 labels, features = targetFeatureSplit(data)
 
-### X/features is a list of lists containing the data
-### y/labels are the classifier labels for POI or non POI
 
+def feature_select(clf, feature, label):
+	'''
+	Uses a classifier to select best features 
+	'''
+
+	features_new = clf.fit(feature, label)
+	SKB_scores =  features_new.scores_
+	SKB_get_support =  features_new.get_support()
+
+
+	best_features = []
+	for foo in range(0, len(features_list)-1):
+		temp_tuple = (features_list[foo + 1], SKB_scores[foo], SKB_get_support[foo])
+		best_features.append(temp_tuple)
+
+	sorted_best_features = sorted(best_features, key=lambda tup: tup[1], reverse=True)
+
+	for tup in sorted_best_features:
+		print tup
+
+feature_select(SelectKBest(f_classif), features, labels)
+
+
+sys.exit()
 
 ##################### Task 4: Try a varity of classifiers #####################
 
@@ -163,16 +187,55 @@ def make_pipeline(select=None, scaler=None, pca=None, clf=None):
 				])
 	return pipeline
 
-pipeline = make_pipeline(pca=PCA(), clf=DecisionTreeClassifier(max_depth=10, min_samples_split=10, min_samples_leaf=3))
+
+old_pipeline = make_pipeline(pca=PCA(), clf=DecisionTreeClassifier(max_depth=10, min_samples_split=10, min_samples_leaf=3))
+
+
+clf=DecisionTreeClassifier(max_depth=10, min_samples_split=10, min_samples_leaf=3)
+
+new_pipeline = make_pipeline(select=SelectKBest(f_classif), pca=PCA(), clf)
+
+
+def validate(estimator, labels_df, features_df, param_dict, folds=None):
+    '''
+    Validates a classifier using StratifiedShuffleSplit() 
+        
+    Metrics include: F1-score, recall, and percision
+       
+    Args:
+        estimator: a SkLearn pipeline
+        labels_df: PD_dataframe of labels to predict.
+        features_df: PD_dataframe of features used to predict labels.
+        folds: Number of rfoldsto perform at cv stage
+        
+    Returns:
+        Prints the evaluation average evaluation metrics for F1
+            score, recall, and precission.
+    '''
+
+
+    cv = StratifiedShuffleSplit(labels, folds, random_state = 42)
+    clf = GridSearchCV(pipeline, param_dict, cv=cv)
 
 
 
-### 2 param_dict, one for testing GridSearch with no params
-param_dict = {}
+
+param_dict = {'pca__n_components' : [1,2,3,8,9,10]}
 #param_dict = {'pca__n_components' : [1,2,3,8,9,10]}
 #param_dict = {'dt__max_depth' : [2,3,4,5,6,7,8,9,10,11,12]}
 # 			  #'dt__min_samples_split' : [2, 4, 8],
 # 			  #'dt__min_samples_leaf' : []}
+
+validate(estimator=new_pipeline, labels_df=labels, features_df=features, param_dict, folds=1000)
+
+
+
+
+
+
+### 2 param_dict, one for testing GridSearch with no params
+
+
 
 
 
@@ -202,7 +265,8 @@ param_dict = {}
 
 
 ##################### Task 6: Dump your classifier #####################
-features_list = ["poi", 
+
+features_list2 = ["poi", 
 				"salary",
 				#"to_messages",
 				#"deferral_payments",
@@ -227,8 +291,10 @@ features_list = ["poi",
 				#"poi_email_interaction",
 				"poi_email_reciept_interaction"]
 				#"adj_compensation"]
-clf = pipeline
+clf = old_pipeline
 
+### create pickle files for tester.py
+dump_classifier_and_data(clf, my_dataset, features_list2)
 
 
 
