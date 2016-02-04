@@ -109,13 +109,12 @@ def feature_select(clf, feature, label):
 	for tup in sorted_best_features:
 		print tup
 
-feature_select(SelectKBest(f_classif), features, labels)
+### Use SelectKBest to peek at what the 10 best features are.
+#feature_select(SelectKBest(f_classif), features, labels)
 
-
-sys.exit()
 
 ##################### Task 4: Try a varity of classifiers #####################
-
+### Several baseline classifiers attempted. DecisionTree was the best.
 ### baseline classifiers tried: 
 ### DT out of box
 # test_pipeline_dt = Pipeline([	
@@ -164,7 +163,6 @@ sys.exit()
 ##################### Task 5: Tune your classifier #####################
 
 
-######-- Decision Tree [start] -- ######
 
 def make_pipeline(select=None, scaler=None, pca=None, clf=None):
 
@@ -191,12 +189,13 @@ def make_pipeline(select=None, scaler=None, pca=None, clf=None):
 old_pipeline = make_pipeline(pca=PCA(), clf=DecisionTreeClassifier(max_depth=10, min_samples_split=10, min_samples_leaf=3))
 
 
-clf=DecisionTreeClassifier(max_depth=10, min_samples_split=10, min_samples_leaf=3)
+clf = DecisionTreeClassifier(max_depth=10, min_samples_split=10, min_samples_leaf=3)
+select = SelectKBest(f_classif)
 
-new_pipeline = make_pipeline(select=SelectKBest(f_classif), pca=PCA(), clf)
+new_pipeline = make_pipeline(select=select, pca=PCA(), clf=clf)
 
 
-def validate(estimator, labels_df, features_df, param_dict, folds=None):
+def sss_validate(estimator, labels_df, features_df, param_dict, folds=None, random_state = None):
     '''
     Validates a classifier using StratifiedShuffleSplit() 
         
@@ -214,55 +213,34 @@ def validate(estimator, labels_df, features_df, param_dict, folds=None):
     '''
 
 
-    cv = StratifiedShuffleSplit(labels, folds, random_state = 42)
-    clf = GridSearchCV(pipeline, param_dict, cv=cv)
+    cv = StratifiedShuffleSplit(labels_df, folds, random_state)
+    
+    clf = GridSearchCV(estimator, param_dict, cv=cv)
+    clf.fit(features_df, labels_df)
+    clf.predict(features_df)
+
+    print clf.grid_scores_
+    print clf.best_estimator_
+    print clf.best_score_
+    print clf.best_params_
+
+    # make use of .fit and .predict look into tester.py code and use from there what I need.
 
 
 
 
-param_dict = {'pca__n_components' : [1,2,3,8,9,10]}
+param_dict = {'pca__n_components' : [2,4,6]}
 #param_dict = {'pca__n_components' : [1,2,3,8,9,10]}
 #param_dict = {'dt__max_depth' : [2,3,4,5,6,7,8,9,10,11,12]}
 # 			  #'dt__min_samples_split' : [2, 4, 8],
 # 			  #'dt__min_samples_leaf' : []}
 
-validate(estimator=new_pipeline, labels_df=labels, features_df=features, param_dict, folds=1000)
+sss_validate(estimator=new_pipeline, labels_df=labels, features_df=features, param_dict=param_dict, folds=1000, random_state = 42)
 
 
 
 
-
-
-### 2 param_dict, one for testing GridSearch with no params
-
-
-
-
-
-			# #('select', SelectKBest(score_func=f_classif)),
-			# 			#('scaler', MinMaxScaler()),
-			# 			#('select', SelectKBest(k=6)),
-			# 			#('scaler', MinMaxScaler()),
-			# 			#('scaler', StandardScaler()),
-			# 			('pca', PCA()),
-			# 			#('dt', DecisionTreeClassifier()),
-			# 			('dt', DecisionTreeClassifier(max_depth=10, min_samples_split=10, min_samples_leaf=3))
-			# 			])
-
-
-# clf = decision_tree_pipeline
-
-#clf = GridSearchCV(pipeline, param_dict)
-
-# folds = 1000
-# cv = StratifiedShuffleSplit(labels, folds, random_state = 42)
-# clf = GridSearchCV(decision_tree_pipeline, param_dict, cv=cv)
-
-
-###### -- Decision Tree [end] -- ######
-
-
-
+sys.exit()
 
 ##################### Task 6: Dump your classifier #####################
 
