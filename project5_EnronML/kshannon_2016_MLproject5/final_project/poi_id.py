@@ -206,6 +206,11 @@ select = SelectKBest(f_classif)
 
 new_pipeline = make_pipeline(select=select, pca=PCA(), clf=clf)
 
+PERF_FORMAT_STRING = "\
+\tAccuracy: {:>0.{display_precision}f}\tPrecision: {:>0.{display_precision}f}\t\
+Recall: {:>0.{display_precision}f}\tF1: {:>0.{display_precision}f}\tF2: {:>0.{display_precision}f}"
+RESULTS_FORMAT_STRING = "\tTotal predictions: {:4d}\tTrue positives: {:4d}\tFalse positives: {:4d}\
+\tFalse negatives: {:4d}\tTrue negatives: {:4d}"
 
 ### takes my pipeline along with a param dict and runs it through a GridSearch and CV to 
 ### return the best model and scores along with Recall, Precision and F1
@@ -235,6 +240,7 @@ def sss_validate(estimator, labels_df, features_df, param_dict, folds=None, rand
     false_negatives = 0
     true_positives = 0
     false_positives = 0
+
     for train_idx, test_idx in cv: 
         features_train = []
         features_test  = []
@@ -247,27 +253,34 @@ def sss_validate(estimator, labels_df, features_df, param_dict, folds=None, rand
             features_test.append( features[jj] )
             labels_test.append( labels[jj] )
 
+        print len(train_idx)
+        print len(test_idx)
 
-    clf.fit(features_df, labels_df)
-    clf.predict(features_df) #turn this into the .fit below.... then change variables to match and rerun
-    
-    predictions = clf.predict(features_test)
+        print len(features_train)
+        print len(labels_train)
+        print len(features_test)
+        print len(labels_test)
 
-        ### ------ code from UDACITY tester.py file ------ ###
+        sys.exit()
+
+        clf.fit(features_train, labels_train)
+
+        
+        predictions = clf.predict(features_test)
         for prediction, truth in zip(predictions, labels_test):
-            if prediction == 0 and truth == 0:
-                true_negatives += 1
-            elif prediction == 0 and truth == 1:
-                false_negatives += 1
-            elif prediction == 1 and truth == 0:
-                false_positives += 1
-            elif prediction == 1 and truth == 1:
-                true_positives += 1
-            else:
-                print "Warning: Found a predicted label not == 0 or 1."
-                print "All predictions should take value 0 or 1."
-                print "Evaluating performance for processed predictions:"
-                break
+        	if prediction == 0 and truth == 0:
+        		true_negatives += 1
+        	elif prediction == 0 and truth == 1:
+        		false_negatives += 1
+        	elif prediction == 1 and truth == 0:
+        		false_positives += 1
+        	elif prediction == 1 and truth == 1:
+        		true_positives += 1
+        	else:
+        		print "Warning: Found a predicted label not == 0 or 1."
+        		print "All predictions should take value 0 or 1."
+        		print "Evaluating performance for processed predictions:"
+        		break
     try:
         total_predictions = true_negatives + false_negatives + false_positives + true_positives
         accuracy = 1.0*(true_positives + true_negatives)/total_predictions
@@ -295,13 +308,6 @@ def sss_validate(estimator, labels_df, features_df, param_dict, folds=None, rand
     # make use of .fit and .predict look into tester.py code and use from there what I need.
 
 
-
-
-
-
-
-
-
 ### create a param dict for to go along with pipeline. These will be passed in sss_validate
 param_dict = {'pca__n_components' : [2,4,6]}
 #param_dict = {'pca__n_components' : [1,2,3,8,9,10]}
@@ -314,7 +320,6 @@ sss_validate(estimator=new_pipeline, labels_df=labels, features_df=features, par
 
 
 
-sys.exit()
 
 ##################### Task 6: Dump your classifier #####################
 
@@ -347,6 +352,13 @@ clf = old_pipeline
 
 ### create pickle files for tester.py
 dump_classifier_and_data(clf, my_dataset, features_list2)
+
+
+
+
+	    #clf.fit(features_df, labels_df)
+	    #clf.predict(features_df) #turn this into the .fit below.... then change variables to match and rerun
+
 
 
 
