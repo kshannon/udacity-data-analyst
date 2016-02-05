@@ -284,17 +284,21 @@ def sss_validate(estimator, labels_df, features_df, param_dict, folds=None, rand
         print "Precision or recall may be undefined due to a lack of true positive predicitons."
 
 
-
-
-
-
-
+    ### this will tell me what grids were attempted and what the mean and variance was for
+    ### each attmept. Further it will provide mewith the best model.
+    ### does it have to be mean and variance? or can I see if it can use reall?
     print clf.grid_scores_
     print clf.best_estimator_
     print clf.best_score_
     print clf.best_params_
 
     # make use of .fit and .predict look into tester.py code and use from there what I need.
+
+
+
+
+
+
 
 
 
