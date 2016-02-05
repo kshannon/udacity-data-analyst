@@ -247,23 +247,24 @@ def sss_validate(estimator, labels_df, features_df, param_dict, folds=None, rand
         labels_train   = []
         labels_test    = []
         for ii in train_idx:
-            features_train.append( features[ii] )
-            labels_train.append( labels[ii] )
+            features_train.append( features_df[ii] )
+            labels_train.append( labels_df[ii] )
         for jj in test_idx:
-            features_test.append( features[jj] )
-            labels_test.append( labels[jj] )
+            features_test.append( features_df[jj] )
+            labels_test.append( labels_df[jj] )
 
         print len(train_idx)
         print len(test_idx)
 
-        print len(features_train)
-        print len(labels_train)
-        print len(features_test)
-        print len(labels_test)
+        print "features train", len(features_train)
+        print "labels train", len(labels_train)
+        print "features test", len(features_test)
+        print "labels test", len(labels_test)
 
-        sys.exit()
 
         clf.fit(features_train, labels_train)
+
+        sys.exit()
 
         
         predictions = clf.predict(features_test)
@@ -310,15 +311,9 @@ def sss_validate(estimator, labels_df, features_df, param_dict, folds=None, rand
 
 ### create a param dict for to go along with pipeline. These will be passed in sss_validate
 param_dict = {'pca__n_components' : [2,4,6]}
-#param_dict = {'pca__n_components' : [1,2,3,8,9,10]}
-#param_dict = {'dt__max_depth' : [2,3,4,5,6,7,8,9,10,11,12]}
-# 			  #'dt__min_samples_split' : [2, 4, 8],
-# 			  #'dt__min_samples_leaf' : []}
 
-sss_validate(estimator=new_pipeline, labels_df=labels, features_df=features, param_dict=param_dict, folds=1000, random_state = 42)
-
-
-
+### validate function to test on new decision tree pipeline.
+#sss_validate(estimator=new_pipeline, labels_df=labels, features_df=features, param_dict=param_dict, folds=1000, random_state = 42)
 
 
 ##################### Task 6: Dump your classifier #####################

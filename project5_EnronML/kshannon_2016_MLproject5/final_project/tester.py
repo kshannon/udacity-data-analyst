@@ -46,12 +46,6 @@ def test_classifier(clf, dataset, feature_list, folds = 1000):
         ### fit the classifier using training set, and test on test set
         clf.fit(features_train, labels_train)
 
-        # print "BEGIN: SelectKBest Info..."
-        # print select.clf.scores_
-        # print clf.pvalues_
-        # print clf.get_support
-        # print clf.get_params
-        # print "END: SelectKBest Info..."
 
 
         predictions = clf.predict(features_test)
