@@ -10,11 +10,9 @@ import pandas as pd
 
 from data_viz import dict_to_dataframe
 from data_shape import engineered_features, outlier_cleaning, data_dict_info
-from clf_validate import validate
 from feature_format import featureFormat, targetFeatureSplit
 from tester import dump_classifier_and_data
 from dummy_transform import DummyTransform
-from clf_validate import validate
 
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.feature_selection import SelectKBest, f_classif
@@ -201,10 +199,10 @@ old_pipeline = make_pipeline(pca=PCA(), clf=DecisionTreeClassifier(max_depth=10,
 ### This is the new Decision Tree pipeline I am making to test out an new
 ### implementation of GridSearchCV using cv=StratifiedShuffeSplit() when passing this 
 ### pipeline to sss_validate.
-clf = DecisionTreeClassifier(max_depth=10, min_samples_split=10, min_samples_leaf=3)
+clf_dt = DecisionTreeClassifier(max_depth=10, min_samples_split=10, min_samples_leaf=3)
 select = SelectKBest(f_classif)
 
-new_pipeline = make_pipeline(select=select, pca=PCA(), clf=clf)
+new_pipeline = make_pipeline(select=select, pca=PCA(), clf=clf_dt)
 
 PERF_FORMAT_STRING = "\
 \tAccuracy: {:>0.{display_precision}f}\tPrecision: {:>0.{display_precision}f}\t\
@@ -261,7 +259,7 @@ def sss_validate(estimator, labels_df, features_df, param_dict, folds=None, rand
         print "features test", len(features_test)
         print "labels test", len(labels_test)
 
-
+        # index error here, not sure why.
         clf.fit(features_train, labels_train)
 
         sys.exit()
@@ -347,13 +345,6 @@ clf = old_pipeline
 
 ### create pickle files for tester.py
 dump_classifier_and_data(clf, my_dataset, features_list2)
-
-
-
-
-	    #clf.fit(features_df, labels_df)
-	    #clf.predict(features_df) #turn this into the .fit below.... then change variables to match and rerun
-
 
 
 

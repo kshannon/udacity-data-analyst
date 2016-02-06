@@ -358,7 +358,6 @@ GridSearchCV(cv=None, error_score='raise',
 
 
 ['poi', 'salary', 'total_payments', 'exercised_stock_options', 'restricted_stock', 'expenses', 'director_fees', 'deferred_income', 'from_poi_to_this_person_fraction', 'from_this_person_to_poi_fraction', 'poi_email_reciept_interaction']
-['poi', 'salary', 'total_payments', 'exercised_stock_options', 'restricted_stock', 'expenses', 'director_fees', 'deferred_income', 'from_poi_to_this_person_fraction', 'from_this_person_to_poi_fraction', 'poi_email_reciept_interaction']
 GridSearchCV(cv=None, error_score='raise',
        estimator=Pipeline(steps=[('select', DummyTransform()), ('scaler', DummyTransform()), ('pca', PCA(copy=True, n_components=None, whiten=False)), ('clf', DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=10,
             max_features=None, max_leaf_nodes=None, min_samples_leaf=3,
