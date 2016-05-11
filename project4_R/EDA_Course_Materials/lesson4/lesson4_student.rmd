@@ -1,10 +1,17 @@
+---
+output: html_document
+---
 Lesson 4
 ========================================================
 
 ***
 
 ### Scatterplots and Perceived Audience Size
-Notes:
+Notes: could also read .tsv with: **read.delim('pseudo_facebook.tsv')**
+Could use ggplot for scatter as well:
+
+  **ggplot(aes(x = age, y = friend_count), data = pf) +**
+    **geom_point()**
 
 ***
 
@@ -12,34 +19,43 @@ Notes:
 Notes:
 
 ```{r Scatterplots}
+library(ggplot2)
+pf <- read.csv('pseudo_facebook.tsv', sep = '\t')
 
+qplot(x = age, y = friend_count, data = pf)
+qplot(age, friend_count, data = pf)
 ```
 
 ***
 
 #### What are some things that you notice right away?
-Response:
+Response: Looking at the scatter plot you see stripes of vertical lines. i.e. people lied about age (100, 69 etc). Most people with lots of friends are in the 20s
 
 ***
 
 ### ggplot Syntax
-Notes:
 
 ```{r ggplot Syntax}
+ggplot(aes(x= age, y = friend_count), data = pf) +
+  geom_point() +
+  xlim(13,90)
 
+summary(pf$age)
 ```
 
 ***
 
 ### Overplotting
-Notes:
+Notes: our graph has overplotting, so frak with alpha levels to render transparency. Done in geom point(). Also look at geom point() vs geom jitter().
 
 ```{r Overplotting}
-
+ggplot(aes(x= age, y = friend_count), data = pf) +
+  geom_jitter(alpha=1/20) + # takes 20 points for a circle to appear 100% opaque
+  xlim(13,90)
 ```
 
 #### What do you notice in the plot?
-Response:
+Response: Still large amount of age 69ers and most people are in their 20s. Slight decrease at age 40ish.Also friend counts are not as high as they use to be for people in their 20s, thanks to jitter vs point.
 
 ***
 
@@ -47,13 +63,19 @@ Response:
 Notes:
 
 ```{r Coord_trans()}
-
+ggplot(aes(x= age, y = friend_count + 1), data = pf) +
+  geom_jitter(alpha=1/20) + # takes 20 points for a circle to appear 100% opaque
+  xlim(13,90) +
+  coord_trans(y = "sqrt")
 ```
 
 #### Look up the documentation for coord_trans() and add a layer to the plot that transforms friend_count using the square root function. Create your plot!
 
 ```{r}
-
+ggplot(aes(x= age, y = friendships_initiated), data = pf) +
+   geom_point(alpha=1/10, position = position_jitter(h=0)) + # takes 20 points for a circle to appear 100% opaque
+   # xlim(13,90) 
+   coord_trans(y = "sqrt")
 ```
 
 #### What do you notice?
@@ -126,7 +148,7 @@ Response:
 Notes:
 
 ```{r Correlation on Subsets}
-with(                 , cor.test(age, friend_count))
+#with(                 , cor.test(age, friend_count))
 ```
 
 ***
@@ -171,8 +193,8 @@ Notes:
 Notes:
 
 ```{r More Caution With Correlation}
-install.packages('alr3')
-library(alr3)
+# install.packages('alr3')
+# library(alr3)
 ```
 
 Create your plot!
