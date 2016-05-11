@@ -15,8 +15,6 @@ library(ggplot2)
 data(diamonds)
 summary(diamonds)
 ?diamonds
-diamonds$color  #Levels: D < E < F < G < H < I < J
-str(diamonds)
 ```
 
 ```{r diamond price hist}
@@ -96,6 +94,18 @@ by(diamonds$price,diamonds$color, summary)
 
 ```
 
+```{r Frequency Polygon to look at weight of diamond}
 
+qplot(x = carat,
+      data = subset(diamonds, !is.na(carat), binwidth=0.1),
+      geom = 'freqpoly', color = carat)
 
+# https://discussions.udacity.com/t/problem-set-3-carat-frequency-polygon/13976/2
+carats <- as.data.frame(table(diamonds$carat))
+carats[carats$Freq > 2000, ]
+
+```
+
+Click **KnitHTML** to see all of your hard work and to have an html
+page of this lesson, your answers, and your notes!
 
