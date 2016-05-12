@@ -184,6 +184,16 @@ Notes:
 Notes:
 
 ```{r}
+names(pf)
+ggplot(aes(x= www_likes_received, y = likes_received), data = pf) +
+  coord_cartesian(xlim = c(13, 90), ylim = c(0, 1000)) +
+  geom_point(alpha=1/10, 
+             position = position_jitter(h=0),
+             color = 'orange') +
+  geom_line(stat = 'summary', fun.y = mean) + 
+  geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .1), linetype =2, color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .5), linetype =2, color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .9), linetype =2, color = 'blue')
 
 ```
 
@@ -193,13 +203,17 @@ Notes:
 Notes:
 
 ```{r Strong Correlations}
-
+ggplot(aes(x= www_likes_received, y = likes_received), data = pf) +
+  geom_point() +
+  xlim(0, quantile(pf$www_likes_received, 0.95)) + 
+  ylim(0, quantile(pf$likes_received, 0.95)) +
+  geom_smooth(method = 'lm', color = 'red')
 ```
 
 What's the correlation betwen the two variables? Include the top 5% of values for the variable in the calculation and round to 3 decimal places.
 
 ```{r Correlation Calcuation}
-
+cor.test(pf$www_likes_received, pf$likes_received, method = 'pearson')
 ```
 
 Response:
@@ -215,14 +229,17 @@ Notes:
 Notes:
 
 ```{r More Caution With Correlation}
-# install.packages('alr3')
-# library(alr3)
+install.packages('alr3')
+library(alr3)
+data(Mitchell)
+?Mitchell
 ```
 
 Create your plot!
 
 ```{r Temp vs Month}
-
+ggplot(data = Mitchell, aes(x= Month, y = Temp)) +
+  geom_point()
 ```
 
 ***
@@ -234,6 +251,7 @@ b. What is the actual correlation of the two variables?
 (Round to the thousandths place)
 
 ```{r Noisy Scatterplots}
+cor.test(Mitchell$Temp, Mitchell$Month, method = 'pearson')
 
 ```
 
@@ -243,7 +261,16 @@ b. What is the actual correlation of the two variables?
 Notes:
 
 ```{r Making Sense of Data}
+range(Mitchell$Month)
+ggplot(data = Mitchell, aes(x= Month, y = Temp)) +
+  geom_point() +
+  scale_x_continuous(breaks = seq(0,203,12)) 
+```
 
+```{r Making Sense of Data - pt 2}
+ggplot(aes(x=(Month%%12),y=Temp),data=Mitchell)+ 
+  geom_point() 
+  
 ```
 
 ***
@@ -262,7 +289,10 @@ Notes:
 Notes:
 
 ```{r Understanding Noise: Age to Age Months}
+ggplot(aes(x= age, y = friend_count_mean), data = pf.fc_by_age) +
+   geom_line(alpha=5/5, position = position_jitter(h=0))
 
+head(pf.fc_by_age, 10)
 ```
 
 ***
