@@ -100,12 +100,24 @@ Notes:
 Notes:
 
 ```{r Conditional Means}
+install.packages('dplyr')
+library(dplyr)
 
+age_groups <- group_by(pf, age)
+pf.fc_by_age <- summarise(age_groups,
+          friend_count_mean = mean(friend_count),
+          friend_count_median = median(friend_count),
+          n=n())
+
+pf.fc_by_age <- arrange(pf.fc_by_age, age)
+head(pf.fc_by_age)
 ```
 
 Create your plot!
 
 ```{r Conditional Means Plot}
+ggplot(aes(x= age, y = friend_count_mean), data = pf.fc_by_age) +
+   geom_line(alpha=5/5, position = position_jitter(h=0))  # takes 20 points for a circle to appear 100% opaque
 
 ```
 
@@ -115,7 +127,15 @@ Create your plot!
 Notes:
 
 ```{r Overlaying Summaries with Raw Data}
-
+ggplot(aes(x= age, y = friendships_initiated), data = pf) +
+  coord_cartesian(xlim = c(13, 90), ylim = c(0, 1000)) +
+  geom_point(alpha=1/10, 
+             position = position_jitter(h=0),
+             color = 'orange') +
+  geom_line(stat = 'summary', fun.y = mean) + 
+  geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .1), linetype =2, color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .5), linetype =2, color = 'blue') +
+  geom_line(stat = 'summary', fun.y = quantile, fun.args = list(probs = .9), linetype =2, color = 'blue')
 ```
 
 #### What are some of your observations of the plot?
@@ -134,7 +154,9 @@ Notes:
 Notes:
 
 ```{r Correlation}
+?cor.test
 
+cor.test(pf$age, pf$friend_count, method = 'pearson') # could use the R with function to...
 ```
 
 Look up the documentation for the cor.test function.
@@ -148,7 +170,7 @@ Response:
 Notes:
 
 ```{r Correlation on Subsets}
-#with(                 , cor.test(age, friend_count))
+with(subset(pf, age <= 70), cor.test(age, friend_count))
 ```
 
 ***
