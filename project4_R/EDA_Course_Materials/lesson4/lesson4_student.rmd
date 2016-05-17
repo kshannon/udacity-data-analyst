@@ -293,6 +293,7 @@ ggplot(aes(x= age, y = friend_count_mean), data = pf.fc_by_age) +
    geom_line(alpha=5/5, position = position_jitter(h=0))
 
 head(pf.fc_by_age, 10)
+pf.fc_by_age[17:19, ]
 ```
 
 ***
@@ -300,6 +301,7 @@ head(pf.fc_by_age, 10)
 ### Age with Months Means
 
 ```{r Age with Months Means}
+pf$age_with_months <- pf$age + (1 - pf$dob_month / 12)
 
 ```
 
