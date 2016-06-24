@@ -14,6 +14,7 @@ library(ggplot2) #must load the ggplot package first
 library(ggthemes)
 library(dplyr)
 library(gridExtra)
+library(reshape2)
 ```
 
 ```{r Load wine data, echo=FALSE}
@@ -39,7 +40,11 @@ A guiding question would be: Are their any trends in the data to suggest that ce
 
 
 ## Introduction
-[TO FINISH]............
+To begin I will start by plotting univariate data plots. i want to get a feel for each feature in the data set and look at the variance of the data. Are there any outlandish outliers? Are there trends in each variable, i.e. 25% of one variable is a 0.00 or some other discrete value. Also what are the distributions of data? Is there many skewed distributions? Or perhaps bimodal distributions. Capturing this along with a summary (quartiles, median, mean, mode) of each feature is my starting point. 
+
+I will then go into creating new features and bivariate analysis looking at correlation between the features. I am especially if any features correlate with quality. If so why is that and what is that interaction.
+
+Finally  Iwill take all I have learned and being to look at multivariate data. I am especially interested to see if there are any correlated features that show interesting spreads of wine quality.
 
 ## Basic Overall Exploration
 ```{r wine summary, echo=FALSE}
@@ -51,7 +56,7 @@ str(wine_data)
 The above summary(data) and str(data) provides an overall view of the data types, Min/ Max, Mean/ Median and the quartiles. I get a sense that a lot of the data is skewed, i.e. "total.sulfur.dioxide" Let's start with some simple histogram plots of each variable, along with a summary of the variable.
 
 
-## Variable Distributions
+## Variable Distributions - Univariate Analysis
 
 ### Fixed Acidity Hist/ Summary:
 ```{r fixed.acidity distro/ summary, echo=FALSE}
@@ -84,6 +89,21 @@ ggplot(aes(x = volatile.acidity), data = wine_data) +
 
 summary(wine_data$volatile.acidity)
 paste("Mode: ", Mode(wine_data$volatile.acidity))
+
+# removed some skewed data to get a better picture of the distribution.
+ggplot(aes(x = volatile.acidity), data = wine_data) +
+  geom_vline(aes(xintercept=mean(wine_data$volatile.acidity), color="Mean"), size=1) +
+  geom_vline(aes(xintercept=median(wine_data$volatile.acidity), color="Median"), size=1) +
+  geom_vline(aes(xintercept=Mode(wine_data$volatile.acidity), color="Mode"), size=1) +
+  geom_histogram(binwidth = 0.01, colour="black") +
+  labs(title = "Volatile Acidity Distribution", x = "Volatile Acidity") +
+  scale_colour_manual(name="Line Color",
+    values=c(Median="orange", Mean="blue", Mode="purple")) +
+  scale_x_continuous(limits = c(quantile(wine_data$volatile.acidity, 0.01),
+                                quantile(wine_data$volatile.acidity, 0.99)),
+                     breaks = seq(0.25, 1, 0.1))+
+  theme_bw()
+
 ```
 Volatile Acidity (acetic acid in the wine) appears to have a slight bimodal distribution with a right-handed skew. A quick look at the data table shows that the highest volatile acidic rating (1.58) has the lowest quality rating in the data set (3). The lowest volatile rating (.120) has the 2nd highest score for quality (7). A cursory glance at the lowest and highest volatile numbers follow suite with higher and lower quality ratings. This will certainly be an interesting feature that might be able to help predict red wine quality and will require further exploration.
 
@@ -102,7 +122,7 @@ ggplot(aes(x = citric.acid), data = wine_data) +
 summary(wine_data$citric.acid)
 paste("Mode: ", Mode(wine_data$citric.acid))
 ```
-Citric Acid can add freshness and flavor to the wine. A quick look at the raw data showed that both wines that were rated as good (~6) had both 0 citri acid present and a hightened amount (~0.75). Perhaps presence of citric acid can not harm the wine, but can potentially improve its freshness? However the potential outlier of 1.00 citric acid did hav a lower quality rating (4). This will be interesting to explore further.
+Citric Acid can add freshness and flavor to the wine. A quick look at the raw data showed that both wines that were rated as good (~6) had both 0 citri acid present and a hightened amount (~0.75). Perhaps presence of citric acid can not harm the wine, but can potentially improve its freshness? However the potential outlier of 1.00 citric acid did hav a lower quality rating (4). This will be interesting to explore further. Another interesting observation is that so many wines have a citric acid value of 0.49. This seems odd for so many wines to have this exact value. The fact that there are so many 0.00 citric acid reading could be more plausible if those wines were made with some different ingrediants or with a different process. 
 
 ### Residual Sugar Hist/ Summary:
 ```{r residual.sugar distro/ summary, echo=FALSE}
@@ -257,16 +277,84 @@ paste("Mode: ", Mode(wine_data$quality))
 ```
 Quality is on a 10 point scale (1=worst, 10=best) In this data set the values fall between 3 - 8. Most scores were 5 and 6. Most wines were  subjectively ok. Very few wines were rated either 3 or 8.
 
+### Feature Engineering
+I wanted to see how pH and acids correlate to each other and if quality can be partly explained by these interactions. I know that pH id dependant on acids and bases. I also know citric acid can be thought of as good, while volatile acid can be thought of as bad. But lrt's create a new feature called total.acids. I believe this should be a combination of all three acid features.
 
+```{r Totoal.acids summary, echo=FALSE}
+wine_data$total.acids <‐ with(wine_data, fixed.acidity + volatile.acidity + citric.acid)
 
+p1 <- qplot(x = fixed.acidity,  data = wine_data) + geom_histogram(binwidth = 0.1)
+p2 <- qplot(x = volatile.acidity, data = wine_data) + geom_histogram(binwidth = 0.01)
+p3 <- qplot(x = citric.acid, data = wine_data) + geom_histogram(binwidth = 0.02)
+p4 <- qplot(x = total.acids, data = wine_data) + geom_histogram(binwidth = 0.1)
 
-
-## Basic Overall Exploration
-```{r Simple histograms, echo=FALSE}
-qplot(wine_data$quality, geom="histogram")
+grid.arrange(p1, p2, p3, p4, ncol = 1)
 ```
 
-see what I did here?
+This might not be too helpful. As citric and volatile acids make up such a small % of fixed acidity. You can see how the distribution of volatile and citric acid are completely different from total and fixed. Ttoal and fixed look almost identical.
+
+## Bivariate Analysis
+I want to switch gears and begin to look at how two variables interact and how each feature is correlated. Lets reaxamine the acids and quality as a 2nd variable.
+
+```{r Totoal.acids with quality, echo=FALSE}
+
+ggplot(aes(x = total.acids, color = factor(quality)),
+data = wine_data) +
+geom_histogram(binwidth = 0.1)
+```
+So here we see how quality os distributed across total acidity. It seems that better rated wines are spread out more in the right handed skew. And that wines that are good or bad tend to stay in the lower acid levels. I will not though that great wines can be found at all acid levels. So perhaps bad wines almost always have lower acidity levels, where as good wines tend to have a bit higher acidity levels. Perhaps we can say that acid levels explain a chunk of the variability we see i nred wine quality. Lets look at citri, and volatile acid leveles next!
+
+```{r citric acids with quiality, echo=FALSE}
+
+ggplot(aes(x = citric.acid, color = factor(quality)),
+data = wine_data) +
+geom_histogram(binwidth = 0.01)
+
+```
+There seems to be a hot spot for poorly rated wines around the 0.00 - 0.10 citric acid range. This in a way supports the prevoious claim about acids and quality. Lets look at volitile acids.
+
+```{r volatile acids with quiality, echo=FALSE}
+
+ggplot(aes(x = volatile.acidity, color = factor(quality)),
+data = wine_data) +
+geom_histogram(binwidth = 0.01)
+
+```
+As expected the higher the volaile acids the poorer the wine on average. There seems to be a negative correlation between citric acids and volatile acids. 
+
+#creat a heat map matrix next
+```{r heastmap, echo=FALSE}
+#qplot(x=wine_data$pH, y=wine_data$quality, data=melt(cor(wine_data)), fill=value, geom="tile")
+
+#ggplot(data = wine_data, aes(x=pH, y=quality, fill=value)) + 
+#  geom_tile()
+cormat <- round(cor(wine_data),2)
+head(cormat)
+tail(cormat)
+
+
+melted_cormat <- melt(cormat)
+head(melted_cormat)
+tail(melted_cormat)
+
+ggplot(data = melted_cormat, aes(x=Var1, y=Var2, fill=value)) + 
+  geom_tile()
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## Header
