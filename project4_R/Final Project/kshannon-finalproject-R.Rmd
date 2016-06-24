@@ -161,7 +161,7 @@ ggplot(aes(x = total.sulfur.dioxide), data = wine_data) +
   geom_vline(aes(xintercept=mean(wine_data$total.sulfur.dioxide), color="Mean"), size=1) +
   geom_vline(aes(xintercept=median(wine_data$total.sulfur.dioxide), color="Median"), size=1) +
   geom_vline(aes(xintercept=Mode(wine_data$total.sulfur.dioxide), color="Mode"), size=1) +
-  geom_histogram(binwidth = 1, colour="black") +
+  geom_histogram(binwidth = 2, colour="black") +
   labs(title = "Total Sulfur Dioxide Distribution", x = "Total Sulfur Dioxide") +
   scale_colour_manual(name="Line Color",
     values=c(Median="orange", Mean="blue", Mode="purple")) +
@@ -170,10 +170,94 @@ ggplot(aes(x = total.sulfur.dioxide), data = wine_data) +
 summary(wine_data$total.sulfur.dioxide)
 paste("Mode: ", Mode(wine_data$total.sulfur.dioxide))
 ```
-total.sulfur.dioxide
+Total sulfur dioxide below 50 ppm is mostly undetectable. This data is highly skewed right. 
+
+### Density Hist/ Summary:
+```{r density/ summary, echo=FALSE}
+ggplot(aes(x = density), data = wine_data) +
+  geom_vline(aes(xintercept=mean(wine_data$density), color="Mean"), size=1) +
+  geom_vline(aes(xintercept=median(wine_data$density), color="Median"), size=1) +
+  geom_vline(aes(xintercept=Mode(wine_data$density), color="Mode"), size=1) +
+  geom_histogram(binwidth = .0001, colour="black") +
+  labs(title = "density", x = "density") +
+  scale_colour_manual(name="Line Color",
+    values=c(Median="orange", Mean="blue", Mode="purple")) +
+  theme_bw()
+
+summary(wine_data$density)
+paste("Mode: ", Mode(wine_data$density))
+```
+Density is close to H2O depending in the amount of sugar and alcohol present. This data looks fairly normally distributed.
+
+### pH Hist/ Summary:
+```{r pH/ summary, echo=FALSE}
+ggplot(aes(x = pH), data = wine_data) +
+  geom_vline(aes(xintercept=mean(wine_data$pH), color="Mean"), size=1) +
+  geom_vline(aes(xintercept=median(wine_data$pH), color="Median"), size=1) +
+  geom_vline(aes(xintercept=Mode(wine_data$pH), color="Mode"), size=1) +
+  geom_histogram(binwidth = .01, colour="black") +
+  labs(title = "pH", x = "pH") +
+  scale_colour_manual(name="Line Color",
+    values=c(Median="orange", Mean="blue", Mode="purple")) +
+  theme_bw()
+
+summary(wine_data$pH)
+paste("Mode: ", Mode(wine_data$pH))
+```
+pH describes the acidity of the wine. This data seems normally distributed.
+
+### Sulphates Hist/ Summary:
+```{r Sulphates/ summary, echo=FALSE}
+ggplot(aes(x = sulphates), data = wine_data) +
+  geom_vline(aes(xintercept=mean(wine_data$sulphates), color="Mean"), size=1) +
+  geom_vline(aes(xintercept=median(wine_data$sulphates), color="Median"), size=1) +
+  geom_vline(aes(xintercept=Mode(wine_data$sulphates), color="Mode"), size=1) +
+  geom_histogram(binwidth = .02, colour="black") +
+  labs(title = "Sulphates", x = "Sulphates") +
+  scale_colour_manual(name="Line Color",
+    values=c(Median="orange", Mean="blue", Mode="purple")) +
+  theme_bw()
+
+summary(wine_data$sulphates)
+paste("Mode: ", Mode(wine_data$sulphates))
+```
+Sulphates contribute to SO2. These are probably correlated. Suplhates data is slightly right handed skewed. Some outliers perhaps.
+
+### Alcohol Hist/ Summary:
+```{r Alcohol/ summary, echo=FALSE}
+ggplot(aes(x = alcohol), data = wine_data) +
+  geom_vline(aes(xintercept=mean(wine_data$alcohol), color="Mean"), size=1) +
+  geom_vline(aes(xintercept=median(wine_data$alcohol), color="Median"), size=1) +
+  geom_vline(aes(xintercept=Mode(wine_data$alcohol), color="Mode"), size=1) +
+  geom_histogram(binwidth = .1, colour="black") +
+  labs(title = "Alcohol", x = "Alcohol") +
+  scale_colour_manual(name="Line Color",
+    values=c(Median="orange", Mean="blue", Mode="purple")) +
+  theme_bw()
+
+summary(wine_data$alcohol)
+paste("Mode: ", Mode(wine_data$alcohol))
+```
+Alcohol data represents the % of alchohol in wine. Heavy right handed skewness. Cursory view seems to suggest that alcohol has a positive correlation with quality.
+
+### Quality Hist/ Summary:
+```{r quality/ summary, echo=FALSE}
+ggplot(aes(x = quality), data = wine_data) +
+  geom_vline(aes(xintercept=mean(wine_data$quality), color="Mean"), size=1) +
+  geom_vline(aes(xintercept=median(wine_data$quality), color="Median"), size=1) +
+  geom_vline(aes(xintercept=Mode(wine_data$quality), color="Mode"), size=1) +
+  geom_histogram(binwidth = 1, colour="black") +
+  labs(title = "Quality", x = "Quality") +
+  scale_colour_manual(name="Line Color",
+    values=c(Median="orange", Mean="blue", Mode="purple")) +
+  theme_bw()
+
+summary(wine_data$quality)
+paste("Mode: ", Mode(wine_data$quality))
+```
+Quality is on a 10 point scale (1=worst, 10=best) In this data set the values fall between 3 - 8. Most scores were 5 and 6. Most wines were  subjectively ok. Very few wines were rated either 3 or 8.
 
 
-fionish rest of 1-D
 
 
 
