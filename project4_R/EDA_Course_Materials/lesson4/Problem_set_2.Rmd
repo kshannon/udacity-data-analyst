@@ -1,0 +1,221 @@
+---
+title: "Problem_set_2"
+author: "Kyle"
+date: "June 2, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r load diamonds data set}
+library(ggplot2) #must load the ggplot package first
+#detach("package:plyr", unload=TRUE)
+#library(plyr)
+library(dplyr)
+library(gridExtra)
+data(diamonds) #loads the diamonds data set since it comes with the ggplot package 
+summary(diamonds)
+# ?diamonds
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure}
+qplot(x = price, data = diamonds)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r simple scatterplot}
+
+p1 <- qplot(x = price, y = x, data = diamonds, colour=color)
+p2 <-  qplot(x = price, y = y, data = diamonds)
+p3 <-  qplot(x = price, y = z, data = diamonds)
+
+
+grid.arrange(p1, p2, p3, ncol = 1)
+
+# qplot docs:
+# http://docs.ggplot2.org/0.9.3/qplot.html
+```
+
+```{r correlation}
+
+#?cor.test
+
+# formatted as: (data$column)
+
+cor.test(diamonds$price, diamonds$x, method = 'pearson')
+cor.test(diamonds$price, diamonds$y, method = 'pearson')
+cor.test(diamonds$price, diamonds$z, method = 'pearson')
+
+```
+
+```{r price/depth scatterplot}
+
+# ?scale_x_continuous
+
+# simple scatter plot
+# qplot(x = price, y = depth, data = diamonds)
+
+# more complex scatter plot
+ggplot(data = diamonds, aes(x = depth, y = price)) +
+  geom_point(alpha=.025) +
+  scale_x_continuous(breaks=seq(50,76,2))
+
+```
+
+```{r price/depth corr}
+
+cor.test(diamonds$depth, diamonds$price, method = 'pearson')
+
+```
+
+```{r price/carat  w/o top 1 percent scatterplot}
+
+#?geom_point()
+
+# more complex scatter plot and I took out the top 1% of all data (outliers perhaps)
+ggplot(aes(x = carat, y = price), 
+       data = subset(diamonds, diamonds$price < quantile(diamonds$price, 0.99) &
+                       diamonds$carat < quantile(diamonds$carat, 0.99))) + 
+  geom_point(alpha=0.10)
+  #scale_x_continuous(breaks=seq(50,76,2))
+
+```
+
+```{r price/volume scatterplot}
+
+# add new feature to data set: volume
+diamonds$volume <- diamonds$x * diamonds$y * diamonds$z
+
+# scatterplot
+ggplot(data = diamonds, aes(x = volume, y = price)) +
+  geom_point(alpha=.010)
+
+# depends on plyr library
+# count(diamonds$volume == 0)
+# count(diamonds$volume > 1000)
+# count(diamonds$volume > 750)
+
+```
+
+```{r price/volume w/ & w/o outliers corr}
+
+pf_800 <- subset(diamonds, !(volume == 0 | volume >= 800)) #or pf_800 <-subset(pf, volume > 0 & volume < 800) 
+
+cor.test(pf_800$price, pf_800$volume , method = 'pearson')
+
+```
+
+```{r price/volume w/o outliers scatterplot + linear model }
+
+ggplot(data = pf_800, aes(x = volume, y = price)) +
+  geom_point(alpha=.010) +
+#  geom_smooth(method = 'lm', color = 'red')
+  geom_smooth(method = "lm", formula = y ~ poly(x,2), size = 1)
+
+
+# Do you think this would be a useful model to estimate
+# the price of diamonds? Why or why not?
+
+
+```
+
+```{r price/volume and price/carat w/o outliers scatterplot + linear model }
+
+diamonds$volume<- diamonds$x * diamonds$y * diamonds$z
+set_volume <- subset(diamonds, volume > 0 & volume < 800)
+ 
+p1 <- ggplot(aes(x = volume, y = price), data = set_volume ) +
+  geom_point(alpha = 1/25, color = 'orange') 
+p_v <- p1 + stat_smooth(method = "lm", formula = y ~ x, size = 1)
+
+p2 <- ggplot(aes(x = carat, y = price), data = set_volume ) +
+  geom_point(alpha = 1/25, color = 'orange') 
+p_c <- p2 + stat_smooth(method = "lm", formula = y ~ x, size = 1)
+
+grid.arrange(p_v, p_c)
+
+cor.test(set_volume$carat, set_volume$volume, method = "pearson")
+
+```
+
+```{r  mean price by clarity}
+
+# detach("package:plyr", unload=TRUE) 
+
+# Use the function dplyr package
+# to create a new data frame containing
+# info on diamonds by clarity.
+#       (1) mean_price
+#       (2) median_price
+#       (3) min_price
+#       (4) max_price
+#       (5) n
+# where n is the number of diamonds in each
+# level of clarity.
+
+diamondsByClarity <-
+diamonds %>%
+group_by(clarity) %>%
+summarise(mean_price = mean(as.numeric(price)),
+          median_price = median(as.numeric(price)),
+          min_price = min(as.numeric(price)),
+          max_price = max(as.numeric(price)),
+          n = n()) %>%
+arrange(clarity)
+
+```
+
+```{r bar chart mean price using arrange() function }
+
+data(diamonds)
+library(dplyr)
+
+diamonds_by_clarity <- group_by(diamonds, clarity)
+diamonds_mp_by_clarity <- summarise(diamonds_by_clarity, mean_price = mean(price))
+
+diamonds_by_color <- group_by(diamonds, color)
+diamonds_mp_by_color <- summarise(diamonds_by_color, mean_price = mean(price))
+
+diamonds_by_cut <- group_by(diamonds, cut)
+diamonds_mp_by_cut <- summarise(diamonds_by_cut, mean_price = mean(price))
+
+
+p1 <- ggplot(aes(clarity, mean_price), data = diamonds_mp_by_clarity) +
+geom_bar(stat = 'identity')
+
+p2 <- ggplot(aes(color, mean_price), data = diamonds_mp_by_color) +
+geom_bar(stat = 'identity')
+
+p3 <- ggplot(aes(cut, mean_price), data = diamonds_mp_by_cut) +
+geom_bar(stat = 'identity')
+
+
+grid.arrange(p1, p2, p3)
+
+# 
+# We think something odd is going here. These trends seem to go against our intuition.
+# 
+# Mean price tends to decrease as clarity improves. The same can be said for color.
+# cut is fairly standartd though the highest grade cut does decrease...
+
+```
+
+
+
+
+
+
+

@@ -100,8 +100,8 @@ Notes:
 Notes:
 
 ```{r Conditional Means}
-install.packages('dplyr')
-library(dplyr)
+# install.packages('dplyr')
+# library(dplyr)
 
 age_groups <- group_by(pf, age)
 pf.fc_by_age <- summarise(age_groups,
@@ -301,7 +301,13 @@ pf.fc_by_age[17:19, ]
 ### Age with Months Means
 
 ```{r Age with Months Means}
-pf$age_with_months <- pf$age + (1 - pf$dob_month / 12)
+
+pf.fc_by_age_months <- pf %>% group_by(age_with_months) %>%
+  summarise(friend_count_mean = mean(as.numeric(friend_count))),
+            friend_count_median = median(as.numeric(friend_count),
+            n = n()) %>%
+  arrange(age_with_months) 
+
 
 ```
 
@@ -321,16 +327,38 @@ Programming Assignment
 ***
 
 ### Smoothing Conditional Means
-Notes:
+Notes: bias/ variance trade off. smoothig might miss some of the details...
 
 ```{r Smoothing Conditional Means}
+
+# p1 <- ggplot(aes(x = age, y = friend_count_mean),
+#              data = subset(pf.fc_by_age, age < 71)) +
+#   geom_line() +
+#   geom_smooth()
+
+p1 <- ggplot(aes(x = age_with_months, y = friend_count_mean),
+             data = subset(pf.fc_by_age_months, age_with_months < 71)) +
+  geom_line() +
+  # geom_smooth()
+# 
+# p3 <- ggplot(aes(x = round(age / 5) * 5, y = friend_count),
+#              data = subset(pf, age < 71)) +
+#   geom_line(stat = 'summary', fun.y = mean) 
+
+# 
+# library(gridExtra)
+# grid.arrange(p1, p2, p3, ncol = 1)
+
+# library(gridExtra)
+# grid.arrange(p1, ncol = 1)
+
 
 ```
 
 ***
 
 ### Which Plot to Choose?
-Notes:
+Notes: 
 
 ***
 

@@ -1,22 +1,41 @@
 Lesson 5
 ========================================================
 
-### Multivariate Data
-Notes:
-
-***
-
 ### Moira Perceived Audience Size Colored by Age
-Notes:
+Notes: still have horizontal stripes at 50, 100 etc (common guesses) bu there was no pattern in the data (adding color for age) so this looked to be a dead end.There was a lot of overplotting so its tough to see what more insight color can offer us.
 
 ***
+
+```{r Create new DataFrame}
+library(dplyr)
+# chain functions together using %>%
+
+pf.fc_by_age_gender <- pseudo_facebook %>%
+  filter(!is.na(gender)) %>% #filters out NA for gender
+  group_by(age, gender) %>%
+  summarise(mean_friend_count = mean(friend_count), #summarise removes one layering of group
+            median_friend_count = median(friend_count),
+            n = n()) %>%
+  ungroup() %>% #to remove other layering
+  arrange(age)
+
+head(pf.fc_by_age_gender)
+
+
+```
 
 ### Third Qualitative Variable
 Notes:
 
 ```{r Third Qualitative Variable}
+
 ggplot(aes(x = gender, y = age),
-       data = subset(pf, !is.na(gender))) + geom_histogram()
+       data = subset(pf.fc_by_age_gender, !is.na(gender))) + geom_boxplot() +
+  stat_summary(fun.y = mean, geom = 'point', shape = 4)
+
+ggplot(aes(x = gender, y = friend_count),
+       data = subset(pf.fc_by_age_gender, !is.na(gender))) + 
+  geom_line(aes(color = gender), stat = 'summary', fun.y = median)
 ```
 
 ***
@@ -26,17 +45,21 @@ Notes:
 
 ```{r Plotting Conditional Summaries}
 
+ggplot(aes(x = age, y = median_friend_count), 
+              data = subset(pf.fc_by_age_gender, !is.na(gender))) +   
+  geom_line(aes(color = gender), stat = 'summary', fun.y = median)
+
 ```
 
 ***
 
-### Thinking in Ratios
-Notes:
+<!-- ### Thinking in Ratios -->
+<!-- Notes: -->
 
-***
+<!-- *** -->
 
 ### Wide and Long Format
-Notes:
+Notes: Transpose data. E.g. columns of male/ female for each age. let's reshape it to one age for each row and then a male column and a female column so we can explore the friend count diff between male and female.
 
 ***
 
@@ -46,6 +69,17 @@ Notes:
 ```{r}
 install.packages('reshape2')
 library(reshape2)
+
+#dcast becauise it is D for Dataframe
+pf.fc_by_age_gender.wide <- dcast(pf.fc_by_age_gender,
+                                  age ~ gender,
+                                value.var = 'median_friend_count')
+# left side of ~ is from first DF that is what data you want to keep, chain with a +
+# right side is the data you want recasted, in this case it is gender
+# value.var allows us to set the data for gender from the first DF
+
+head(pf.fc_by_age_gender.wide)
+
 ```
 
 
@@ -55,6 +89,12 @@ library(reshape2)
 Notes:
 
 ```{r Ratio Plot}
+
+ggplot(aes(x = age, y = female / male),
+       data = pf.fc_by_age_gender.wide) +
+  geom_line() + 
+  geom_hline(yintercept = 1, alpha = 0.3, linetype = 2)
+
 
 ```
 

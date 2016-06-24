@@ -1,0 +1,234 @@
+---
+title: "What makes wine taste good or bad?"
+author: "Kyle Shannon"
+date: "June 23, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Load Libraries, echo=FALSE}
+library(ggplot2) #must load the ggplot package first
+library(ggthemes)
+library(dplyr)
+library(gridExtra)
+```
+
+```{r Load wine data, echo=FALSE}
+# Load the Data
+wine_data <‐ read.csv('wineQualityReds.csv', header = T)
+# Dropping X column - It's just an identifier
+wine_data <‐ subset(wine_data, select = ‐ X)
+```
+
+```{r Function to calculate Mode, echo=FALSE}
+# To find the Mode of a vector/ list
+Mode <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+```
+
+## Abstract
+Exploratory Data Analysis (EDA) on a complete data set with 12 variables and 1599 observations. This data set is about Red Wine and includes both chemically measured (11 variables) properties of the wine and 1 sensory measured quality of the wine. The sensory measurement was a rating given by wine experts on a 10 point scale (1 = worst, 10 = best) about the quality of the wine. The goal of this exploratory analysis is to get a better understanding of the underlying data, the chmical properties that make up the wine and how they may impact the quality. 
+
+A guiding question would be: Are their any trends in the data to suggest that certain chemical properties influence a wine's quality rating?
+
+
+
+## Introduction
+[TO FINISH]............
+
+## Basic Overall Exploration
+```{r wine summary, echo=FALSE}
+#summarize wine_data
+summary(wine_data)
+str(wine_data)
+```
+
+The above summary(data) and str(data) provides an overall view of the data types, Min/ Max, Mean/ Median and the quartiles. I get a sense that a lot of the data is skewed, i.e. "total.sulfur.dioxide" Let's start with some simple histogram plots of each variable, along with a summary of the variable.
+
+
+## Variable Distributions
+
+### Fixed Acidity Hist/ Summary:
+```{r fixed.acidity distro/ summary, echo=FALSE}
+ggplot(aes(x = fixed.acidity), data = wine_data) +
+  geom_vline(aes(xintercept=mean(wine_data$fixed.acidity), color="Mean"), size=1) +
+  geom_vline(aes(xintercept=median(wine_data$fixed.acidity), color="Median"), size=1) +
+  geom_vline(aes(xintercept=Mode(wine_data$fixed.acidity), color="Mode"), size=1) +
+  geom_histogram(binwidth = 0.10, colour="black") +
+  labs(title = "Fixed Acidity Distribution", x = "Fixed Acidity") +
+  scale_colour_manual(name="Line Color",
+    values=c(Median="orange", Mean="blue", Mode="purple")) +
+  theme_bw()
+
+summary(wine_data$fixed.acidity)
+paste("Mode: ", Mode(wine_data$fixed.acidity))
+```
+Fixed Acidity (tartaric acids) has a right skew favoring slightly higher acidity.
+
+### Volatile Acidity Hist/ Summary:
+```{r volatile.acidity distro/ summary, echo=FALSE}
+ggplot(aes(x = volatile.acidity), data = wine_data) +
+  geom_vline(aes(xintercept=mean(wine_data$volatile.acidity), color="Mean"), size=1) +
+  geom_vline(aes(xintercept=median(wine_data$volatile.acidity), color="Median"), size=1) +
+  geom_vline(aes(xintercept=Mode(wine_data$volatile.acidity), color="Mode"), size=1) +
+  geom_histogram(binwidth = 0.01, colour="black") +
+  labs(title = "Volatile Acidity Distribution", x = "Volatile Acidity") +
+  scale_colour_manual(name="Line Color",
+    values=c(Median="orange", Mean="blue", Mode="purple")) +
+  theme_bw()
+
+summary(wine_data$volatile.acidity)
+paste("Mode: ", Mode(wine_data$volatile.acidity))
+```
+Volatile Acidity (acetic acid in the wine) appears to have a slight bimodal distribution with a right-handed skew. A quick look at the data table shows that the highest volatile acidic rating (1.58) has the lowest quality rating in the data set (3). The lowest volatile rating (.120) has the 2nd highest score for quality (7). A cursory glance at the lowest and highest volatile numbers follow suite with higher and lower quality ratings. This will certainly be an interesting feature that might be able to help predict red wine quality and will require further exploration.
+
+### Citric Acid Hist/ Summary:
+```{r citric.acid distro/ summary, echo=FALSE}
+ggplot(aes(x = citric.acid), data = wine_data) +
+  geom_vline(aes(xintercept=mean(wine_data$citric.acid), color="Mean"), size=1) +
+  geom_vline(aes(xintercept=median(wine_data$citric.acid), color="Median"), size=1) +
+  geom_vline(aes(xintercept=Mode(wine_data$citric.acid), color="Mode"), size=1) +
+  geom_histogram(binwidth = 0.01, colour="black") +
+  labs(title = "Citric Acid Distribution", x = "Citric Acid") +
+  scale_colour_manual(name="Line Color",
+    values=c(Median="orange", Mean="blue", Mode="purple")) +
+  theme_bw()
+
+summary(wine_data$citric.acid)
+paste("Mode: ", Mode(wine_data$citric.acid))
+```
+Citric Acid can add freshness and flavor to the wine. A quick look at the raw data showed that both wines that were rated as good (~6) had both 0 citri acid present and a hightened amount (~0.75). Perhaps presence of citric acid can not harm the wine, but can potentially improve its freshness? However the potential outlier of 1.00 citric acid did hav a lower quality rating (4). This will be interesting to explore further.
+
+### Residual Sugar Hist/ Summary:
+```{r residual.sugar distro/ summary, echo=FALSE}
+ggplot(aes(x = residual.sugar), data = wine_data) +
+  geom_vline(aes(xintercept=mean(wine_data$residual.sugar), color="Mean"), size=1) +
+  geom_vline(aes(xintercept=median(wine_data$residual.sugar), color="Median"), size=1) +
+  geom_vline(aes(xintercept=Mode(wine_data$residual.sugar), color="Mode"), size=1) +
+  geom_histogram(binwidth = 0.1, colour="black") +
+  labs(title = "Residual Sugar Distribution", x = "Residual Sugar") +
+  scale_colour_manual(name="Line Color",
+    values=c(Median="orange", Mean="blue", Mode="purple")) +
+  theme_bw()
+
+summary(wine_data$residual.sugar)
+paste("Mode: ", Mode(wine_data$residual.sugar))
+```
+Residual Sugar is the remaining sugar after fermentation stops. Wines with more than 45 g / dm^3 are considered sweet. We have no "sweet" wines in our data. Wines with less than 1.00 g / dm^3 are consiered rare. We have only two of those wines, both at 0.9. Therefore our wine list is not skewed by wines with rare residual sugar readings or sweet wines. Most of the wines in this data set are under 4 g / dm^3. It looks fairly normally distributed, except for the right handed skewness. 
+
+### Chlorides Hist/ Summary:
+```{r Chlorides distro/ summary, echo=FALSE}
+ggplot(aes(x = chlorides), data = wine_data) +
+  geom_vline(aes(xintercept=mean(wine_data$chlorides), color="Mean"), size=1) +
+  geom_vline(aes(xintercept=median(wine_data$chlorides), color="Median"), size=1) +
+  geom_vline(aes(xintercept=Mode(wine_data$chlorides), color="Mode"), size=1) +
+  geom_histogram(binwidth = 0.005, colour="black") +
+  labs(title = "Chlorides Distribution", x = "Chlorides") +
+  scale_colour_manual(name="Line Color",
+    values=c(Median="orange", Mean="blue", Mode="purple")) +
+  theme_bw()
+
+summary(wine_data$chlorides)
+paste("Mode: ", Mode(wine_data$chlorides))
+```
+Chlorides data is the amount of salt in the wine. Looks normally distrtibuted, except for some right handed skewness. Smome potential outliers may be present as well. It looks like there may be a slight negative correlation between the amount of chlorides and quality. This will be looked into when we start looking at variable interactions.
+
+### Free Sulfur Dioxide Hist/ Summary:
+```{r free.sulfur.dioxide/ summary, echo=FALSE}
+ggplot(aes(x = free.sulfur.dioxide), data = wine_data) +
+  geom_vline(aes(xintercept=mean(wine_data$free.sulfur.dioxide), color="Mean"), size=1) +
+  geom_vline(aes(xintercept=median(wine_data$free.sulfur.dioxide), color="Median"), size=1) +
+  geom_vline(aes(xintercept=Mode(wine_data$free.sulfur.dioxide), color="Mode"), size=1) +
+  geom_histogram(binwidth = 1, colour="black") +
+  labs(title = "Free Sulfur Dioxide Distribution", x = "Free Sulfur Dioxide") +
+  scale_colour_manual(name="Line Color",
+    values=c(Median="orange", Mean="blue", Mode="purple")) +
+  theme_bw()
+
+summary(wine_data$free.sulfur.dioxide)
+paste("Mode: ", Mode(wine_data$free.sulfur.dioxide))
+```
+Free Sulfar Dioxide prevents microbial growth and the oxidation of wine. I would suspect that there may be an optimal range for sulfur dioxide as a preservative, but too much may taint the taste and too little may not provide the wine enough protection. The distribution of dioxides is heavily righthanded skewed. From a cursory glance there does not seem to be a difference in the quality between low, medium and high number of dioxides.
+
+### Total Sulfur Dioxide Hist/ Summary:
+```{r total.sulfur.dioxide/ summary, echo=FALSE}
+ggplot(aes(x = total.sulfur.dioxide), data = wine_data) +
+  geom_vline(aes(xintercept=mean(wine_data$total.sulfur.dioxide), color="Mean"), size=1) +
+  geom_vline(aes(xintercept=median(wine_data$total.sulfur.dioxide), color="Median"), size=1) +
+  geom_vline(aes(xintercept=Mode(wine_data$total.sulfur.dioxide), color="Mode"), size=1) +
+  geom_histogram(binwidth = 1, colour="black") +
+  labs(title = "Total Sulfur Dioxide Distribution", x = "Total Sulfur Dioxide") +
+  scale_colour_manual(name="Line Color",
+    values=c(Median="orange", Mean="blue", Mode="purple")) +
+  theme_bw()
+
+summary(wine_data$total.sulfur.dioxide)
+paste("Mode: ", Mode(wine_data$total.sulfur.dioxide))
+```
+total.sulfur.dioxide
+
+
+fionish rest of 1-D
+
+
+
+## Basic Overall Exploration
+```{r Simple histograms, echo=FALSE}
+qplot(wine_data$quality, geom="histogram")
+```
+
+see what I did here?
+
+
+## Header
+```{r tester, echo=FALSE}
+#qplot(wine_data$fixed.acidity, geom="histogram")
+```
+ 
+
+
+## Header
+```{r simple scatter plots, echo=FALSE}
+
+p1 <- qplot(x = quality, y = fixed.acidity,  data = wine_data, alpha = 0.05)
+p2 <- qplot(x = quality, y = volatile.acidity, data = wine_data, alpha = 0.05)
+p3 <- qplot(x = quality, y = citric.acid, data = wine_data, alpha = 0.05)
+p4 <- qplot(x = quality, y = residual.sugar, data = wine_data, alpha = 0.05)
+p5 <- qplot(x = quality, y = free.sulfur.dioxide, data = wine_data, alpha = 0.05)
+p6 <- qplot(x = quality, y = total.sulfur.dioxide, data = wine_data, alpha = 0.05)
+p7 <- qplot(x = quality, y = density, data = wine_data, alpha = 0.05)
+p8 <- qplot(x = quality, y = pH, data = wine_data, alpha = 0.05)
+p9 <- qplot(x = quality, y = sulphates, data = wine_data, alpha = 0.05)
+p10 <- qplot(x = quality, y = alcohol, data = wine_data, alpha = 0.05)
+p11 <- qplot(x = quality, y = chlorides, data = wine_data, alpha = 0.05)
+
+grid.arrange(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, ncol = 3)
+```
+
+
+## Header
+```{r title, echo=FALSE}
+# Code:
+```
+
+
+
+
+
+
+
+## Final Plots
+```{r final plots, echo=FALSE}
+# Final plot goes here, must be 3 and show a pattern
+plot(pressure)
+```
+
+## Reflection
+```{r reflection, echo=FALSE}
+#Reflection goes here...
+```
