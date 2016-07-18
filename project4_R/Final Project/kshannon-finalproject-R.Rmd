@@ -38,7 +38,7 @@ Exploratory Data Analysis (EDA) on a complete data set with 12 variables and 159
 
 A guiding question would be: Are their any trends in the data to suggest that certain chemical properties influence a wine's quality rating?
 
-
+ 
 ## Introduction
 To begin I will start by plotting univariate data plots. i want to get a feel for each feature in the data set and look at the variance of the data. Are there any outlandish outliers? Are there trends in each variable, i.e. 25% of one variable is a 0.00 or some other discrete value. Also what are the distributions of data? Is there many skewed distributions? Or perhaps bimodal distributions. Capturing this along with a summary (quartiles, median, mean, mode) of each feature is my starting point. 
 

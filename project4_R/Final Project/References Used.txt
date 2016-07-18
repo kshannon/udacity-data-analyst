@@ -6,13 +6,7 @@ List of references/ resources used for this project:
 - https://stackoverflow.com/questions/2547402/is-there-a-built-in-function-for-finding-the-mode (to find the mode of a vector or list)
 - http://www.sthda.com/english/wiki/ggplot2-quick-correlation-matrix-heatmap-r-software-and-data-visualization (to make corr heatmap matrix)
 - http://zevross.com/blog/2014/08/04/beautiful-plotting-in-r-a-ggplot2-cheatsheet-3/#working-with-the-legend (good general graphing info, especially about playing with labels, titles, legends, etc)
--
--
--
--
--
--
--
+
 
 
 
