@@ -337,18 +337,6 @@ This figure provides a general high level overview about what features are corre
 
 I also printed out the matrix, above, in number form so we can get an exact correlation measurement for each interaction.
 
-### Density Plot for Total Acids
-```{r Totoal.acids density plot, echo=FALSE}
-
-ggplot(aes(x = total.acids, color = factor(quality)), data = wine_data) +
-  geom_density() +
-  scale_color_discrete(name="Quality")+ 
-  ylab("Probability Density")
-
-```
-This density plot reveals an interesting find. 1. the variance for lower quality wines seems to be smaller vs. a larger variance for higher quality wines. 2. Lower quality wines seem to have a closer to normal distribution, where higher quality wines have a total acid density that is more rightward skewed.
-
-
 Next let's reexamine the acids and quality as a 2nd variable.
 
 ```{r Totoal.acids with quality, echo=FALSE}
@@ -356,7 +344,6 @@ Next let's reexamine the acids and quality as a 2nd variable.
 ggplot(aes(x = total.acids, color = factor(quality)),
 data = wine_data) +
 geom_histogram(binwidth = 0.1)
-
 ```
 
 So here we see how quality is distributed across total acidity. It seems that better rated wines are spread out more in the right handed skew. And that wines that are good or bad tend to stay in the lower acid levels. I will not though that great wines can be found at all acid levels. So perhaps bad wines almost always have lower acidity levels, where as good wines tend to have a bit higher acidity levels. Perhaps we can say that acid levels explain a chunk of the variability we see in red wine quality. Lets look at citri, and volatile acid levels next!
@@ -403,51 +390,6 @@ summary(lm(wine_data$pH ~ log10(wine_data$total.acids)))
 Not surprisingly fixed acidity and total acids had largely the same correlation (each approx -0.68) and spread of data. The main difference between the two are volatile acids. 
 
 So far during this analysis I have noticed that alcohol and volatile acids have had interesting interactions with quality. They both seem to have an affect on the quality of red wines, so I am going to explore those three variables next.
-
-### BoxPlot for Citric Acid by Quality
-```{r boxplot citric acid, echo=FALSE}
-
-ggplot(aes(x = factor(quality), y = citric.acid), data = wine_data) +
-  geom_boxplot() +
-  ylim(min(wine_data$citric.acid), quantile(wine_data$citric.acid, 0.99))
-
-```
-
-
-
-### BoxPlot for Alcohol by Quality
-```{r boxplot alcohol, echo=FALSE}
-
-ggplot(aes(x = factor(quality), y = alcohol), data = wine_data) +
-  geom_boxplot() +
-  ylim(min(wine_data$alcohol), quantile(wine_data$alcohol, 0.99))
-
-```
-
-XYZ
-
-### BoxPlot for Sulphates by Quality
-```{r boxplot suplates, echo=FALSE}
-
-ggplot(aes(x = factor(quality), y = sulphates), data = wine_data) +
-  geom_boxplot() +
-  ylim(min(wine_data$sulphates), quantile(wine_data$sulphates, 0.99))
-
-```
-
-XYZ
-
-### BoxPlot for Desnity by Quality
-```{r boxplot density, echo=FALSE}
-
-ggplot(aes(x = factor(quality), y = density), data = wine_data) +
-  geom_boxplot() +
-  ylim(min(wine_data$density), quantile(wine_data$density, 0.99))
-
-```
-
-XYZ
-
 
 ## Bivariate Analysis
 
@@ -582,7 +524,7 @@ ggplot(aes(x = alcohol, color = factor(quality)), data = wine_data) +
   annotate("text", x = 12.25, y = 0.85, label = "Inflexion Area") +
   annotate("rect", xmin = 10.5, xmax = 11.5, ymin = 0, ymax = 1, alpha = .3) +
   xlab("Alcohol as a % of Volume (ABV)") +
-  ylab("Probability Density")
+  ylab("Density")
 
 ```
 
