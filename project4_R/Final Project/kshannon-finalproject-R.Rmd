@@ -379,7 +379,20 @@ geom_histogram(binwidth = 0.01)
 
 ```
 
-As expected the higher the volatile acids the poorer the wine on average. There seems to be a negative correlation between citric acids and volatile acids. 
+As expected the higher the volatile acids the poorer the wine on average. There seems to be a negative correlation between citric acids and volatile acids.
+
+### Density Plot for Alcohol
+```{r alcohol density plot, echo=FALSE}
+
+ggplot(aes(x = alcohol, color = factor(quality)), data = wine_data) +
+  geom_density() +
+  scale_color_discrete(name="Quality")+ 
+  ylab("Probability Density")
+
+```
+
+This density plot shows some great differences in the distribution of wines by quality when alcohol in being factored in. One important thing to notice is that there is sort of an inflexion area around alcohol percentage of 11. In this area we see that as alcohol begin to increase in percentage the number of poor quality wines begins to tapper off and thenumber of high quality wines begins to increase. Because alcohol had such a large correlation with quality (0.48), compared with quality vs. other variables, this was an important variable to look further into. 
+
 
 ### Fixed and Total Acids Interaction with pH
 ```{r fixed and total acids interaction with pH, echo=FALSE}
@@ -404,6 +417,11 @@ Not surprisingly fixed acidity and total acids had largely the same correlation 
 
 So far during this analysis I have noticed that alcohol and volatile acids have had interesting interactions with quality. They both seem to have an affect on the quality of red wines, so I am going to explore those three variables next.
 
+### Summary for Citric Acid by Quality
+```{r summary stats for citric acid, echo=FALSE}
+with(wine_data, by(citric.acid, factor(quality), summary))
+```
+
 ### BoxPlot for Citric Acid by Quality
 ```{r boxplot citric acid, echo=FALSE}
 
@@ -413,7 +431,14 @@ ggplot(aes(x = factor(quality), y = citric.acid), data = wine_data) +
 
 ```
 
+Boxplot shows a clear positive relathioship with the average amount of citric acid increasing as quality increases. 
 
+
+### Summary for Alcohol by Quality
+
+```{r summary stats for alcohol, echo=FALSE}
+with(wine_data, by(alcohol, factor(quality), summary))
+```
 
 ### BoxPlot for Alcohol by Quality
 ```{r boxplot alcohol, echo=FALSE}
@@ -424,7 +449,13 @@ ggplot(aes(x = factor(quality), y = alcohol), data = wine_data) +
 
 ```
 
-XYZ
+Again, like the previous boxplot we see this positive trend with % of alcohol and quality of wine. These trends are lining up with the correlation matrix well.
+
+
+### Summary for Sulphates by Quality
+```{r summary stats for sulphates, echo=FALSE}
+with(wine_data, by(sulphates, factor(quality), summary))
+```
 
 ### BoxPlot for Sulphates by Quality
 ```{r boxplot suplates, echo=FALSE}
@@ -435,7 +466,13 @@ ggplot(aes(x = factor(quality), y = sulphates), data = wine_data) +
 
 ```
 
-XYZ
+Sulphates tended to have a lsuightly positive relathioship with quality, this is especially seen at the higher quality wines, of 7 and 8. I think this boxplot show how useful sulphates could be in being a feature in an algorithm to predict wine quality. 
+
+
+### Summary for Denisty by Quality
+```{r summary stats for density, echo=FALSE}
+with(wine_data, by(density, factor(quality), summary))
+```
 
 ### BoxPlot for Desnity by Quality
 ```{r boxplot density, echo=FALSE}
@@ -446,7 +483,7 @@ ggplot(aes(x = factor(quality), y = density), data = wine_data) +
 
 ```
 
-XYZ
+Density, unklike the other three box plots, shows a slight negative relathionship. The trend seems to come out with wines rated really low or really high, but it is a bit muddled in the middle, for wines with quality rating of 4-7. Again though, this feature would be good for a model, because it helps explain some of the variance seen in wine quality.
 
 
 ## Bivariate Analysis
