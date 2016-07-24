@@ -262,7 +262,7 @@ def sss_validate(estimator, labels_df, features_df, param_dict, folds=None, rand
         # index error here, not sure why.
         clf.fit(features_train, labels_train)
 
-        sys.exit()
+        #sys.exit()
 
         
         predictions = clf.predict(features_test)
