@@ -1,0 +1,74 @@
+---
+title: "baseball_explore"
+author: "Kyle Shannon"
+date: "July 26, 2016"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Load Libraries, echo=FALSE, message=FALSE, include=FALSE}
+library(ggplot2) #must load the ggplot package first
+library(ggthemes)
+library(dplyr)
+library(gridExtra)
+library(RColorBrewer)
+library(reshape2)
+```
+
+```{r Load baseball data, echo=FALSE}
+# Load the Data
+data <- read.csv('baseball_data.csv', header = T)
+# Dropping X column - It's just an identifier
+#wine_data <- subset(wine_data, select = - X)
+```
+
+## Basic Summary Exploration
+```{r baseball summary, echo=FALSE}
+#summarize wine_data
+summary(data)
+str(data)
+```
+
+```{r height distro/ summary, echo=FALSE}
+ggplot(aes(x = height), data = data) +
+  geom_histogram(binwidth = 1, colour="black") +
+  labs(title = "Height Distribution", x = "height (in)") +
+  theme_bw()
+
+summary(data$height)
+
+```
+
+
+```{r weight distro/ summary, echo=FALSE}
+ggplot(aes(x = weight), data = data) +
+  geom_histogram(binwidth = 1, colour="black") +
+  labs(title = "weight Distribution", x = "weight (lbs)") +
+  theme_bw()
+
+summary(data$weight)
+
+```
+
+```{r avg distro/ summary, echo=FALSE}
+ggplot(aes(x = avg), data = data) +
+  geom_histogram(binwidth = .005, colour="black") +
+  labs(title = "avg Distribution", x = "avg") +
+  theme_bw()
+
+summary(data$avg)
+
+```
+
+```{r hr distro/ summary, echo=FALSE}
+ggplot(aes(x = HR), data = data) +
+  geom_histogram(binwidth = 3, colour="black") +
+  labs(title = "hr Distribution", x = "hr") +
+  theme_bw()
+
+summary(data$HR)
+```
