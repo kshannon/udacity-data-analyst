@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+    <script type="text/javascript">
     
     <style>
       circle.dimple-series-1 {
@@ -11,7 +12,7 @@
       }
     </style>
 
-    <script type="text/javascript">
+    
       function draw(data) {
       
       /*
@@ -20,7 +21,7 @@
 
           "use strict";
           var margin = 75,
-              width = 1400 - margin,
+              width = 1000 - margin,
               height = 600 - margin;
 
           var svg = d3.select("body")
@@ -34,9 +35,10 @@
         Dimple.js Chart construction code
       */
 
-          var myChart = new dimple.chart(svg, data);
-          var x = myChart.addMeasureAxis("x", "avg"); 
-          myChart.addMeasureAxis("y", "HR");
+          var chart = new dimple.chart(svg, data);
+          chart.addMeasureAxis("x", "avg"); 
+          chart.addMeasureAxis("y", "HR");
+          chart.addMeasureAxis("z", "height");
 
           //myChart.addAxis("z", "weigfhtt"); size of bubble
           //myChart.addAxis("c", "handedness"); color
@@ -45,16 +47,16 @@
           //x.dateParseFormat = "%Y";
           //x.tickFormat = "%Y";
           //x.timeInterval = 4;
-          myChart.addSeries(null, dimple.plot.scatter);
-          myChart.draw();
+          chart.addSeries(null, dimple.plot.scatter);
+          //var title = x.titleShape.text("My own title");
+          chart.draw();
         };
 
     </script>
   </head>
 <body>
-  <script type="text/javascript">
   /*
-    Use D3 (not dimple.js) to load the TSV file
+    Use D3 (not dimple.js) to load the CSV file
     and pass the contents of it to the draw function
     */
   d3.csv("baseball_data.csv", draw);
