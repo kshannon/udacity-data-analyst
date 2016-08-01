@@ -16,6 +16,7 @@
         
         chart.addSeries(["handedness"], dimple.plot.bar); // updates tool tip too!
         chart.addLegend(850, 120, 40, 400, "right")
+        chart.assignColor("handedness", []], stroke, .25)
 
         svg1.append("text")
             .attr("x", chart._xPixels() + chart._widthPixels() / 2)
@@ -45,8 +46,9 @@
             y2.fontSize = "12px";
 
             //chart2.addMeasureAxis("z", "Operating Profit");
-            chart2.addSeries("handedness", dimple.plot.bubble);
-            chart2.addLegend(200, 10, 360, 20, "right");
+            chart2.addSeries(["name", "handedness"], dimple.plot.bubble);
+            //chart2.addLegend(850, 120, 40, 400, "right")
+            chart2.addLegend(850, 480, 40, 400, "right");
             
             /*svg2.append("text")
             .attr("x", chart._xPixels() + chart._widthPixels() / 2)
