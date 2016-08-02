@@ -1,5 +1,6 @@
     var width = 1000,
         height = 600;
+    
 // Chart1 - box plot count for Baseball Data Set
 
     var svg1 = dimple.newSvg("#chart1", width, height);
@@ -16,7 +17,7 @@
         
         chart.addSeries(["handedness"], dimple.plot.bar); // updates tool tip too!
         chart.addLegend(850, 120, 40, 400, "right")
-        chart.assignColor("handedness", []], stroke, .25)
+        //chart.assignColor("handedness", [], stroke, .25) //this break my first chart.. worked before.
 
         svg1.append("text")
             .attr("x", chart._xPixels() + chart._widthPixels() / 2)
@@ -27,16 +28,14 @@
             .text("Batting Stances of MLB Players");
 
     chart.draw();
-    });
-
+    }); 
 
 // Chart2 - scatter plot count for Baseball Data Set
 
     var svg2 = dimple.newSvg("#chart2", width, height);
-          d3.csv("baseball_data_v2.csv", function (data) {
-            //data = dimple.filterData(data, "Date", "01/12/2012");
+    d3.csv("baseball_data_v2.csv", function(data){
             var chart2 = new dimple.chart(svg2, data);
-            //chart2.setBounds(60, 30, 500, 330)
+
             var x2 = chart2.addMeasureAxis("x", "HR");
             x2.title = "Number of Home Runs";
             x2.fontSize = "12px";
@@ -49,17 +48,15 @@
             chart2.addSeries(["name", "handedness"], dimple.plot.bubble);
             //chart2.addLegend(850, 120, 40, 400, "right")
             chart2.addLegend(850, 480, 40, 400, "right");
+
             
-            /*svg2.append("text")
-            .attr("x", chart._xPixels() + chart._widthPixels() / 2)
-            .attr("y", chart._yPixels() - 5)
-            .style("text-anchor", "middle")
-            .style("font-weight", "bold")
-            .style("font-size", "20px")
-            .text("Batting Average vs Home Runs by Handedness "); */
+            
+
 
     chart2.draw();
     });
+    
+
 
 
     /*
