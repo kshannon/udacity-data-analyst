@@ -123,6 +123,27 @@
 // Chart3 - Box Plot for Baseball Data Set
 
 
+    var svg3 = dimple.newSvg("#chart3", width, height);
+    d3.csv("baseball_data_v2.csv", function(data){
+            var chart3 = new dimple.chart(svg3, data);
+
+            var x3 = chart3.addMeasureAxis("x", "HR");
+            x3.title = "Number of Home Runs";
+            x3.fontSize = "12px";
+
+            
+            var y3 =chart3.addMeasureAxis("y", "avg");
+            y3.title = "Batting Average";
+            y3.fontSize = "12px";
+            y3.ticks = 10;
+            y3.tickFormat = ',.3f';
+
+            //chart2.addMeasureAxis("z", "Operating Profit");
+            chart3.addSeries(["name", "handedness"], dimple.plot.bubble);
+            //chart2.addLegend(850, 120, 40, 400, "right")
+            var Legend3 = chart3.addLegend(850, 480, 40, 400, "right");
+    chart3.draw(); 
+    });
 
 
 
