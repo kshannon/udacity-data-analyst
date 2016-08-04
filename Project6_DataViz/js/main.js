@@ -39,18 +39,27 @@
             var x2 = chart2.addMeasureAxis("x", "HR");
             x2.title = "Number of Home Runs";
             x2.fontSize = "12px";
+
             
             var y2 =chart2.addMeasureAxis("y", "avg");
             y2.title = "Batting Average";
             y2.fontSize = "12px";
+            y2.ticks = 20;
+            y2.tickFormat = ',.3f';
 
             //chart2.addMeasureAxis("z", "Operating Profit");
             chart2.addSeries(["name", "handedness"], dimple.plot.bubble);
             //chart2.addLegend(850, 120, 40, 400, "right")
             chart2.addLegend(850, 480, 40, 400, "right");
 
-            
-            
+
+        svg2.append("text")
+            .attr("x", chart2._xPixels() + chart2._widthPixels() / 2)
+            .attr("y", chart2._yPixels() - 5)
+            .style("text-anchor", "middle")
+            .style("font-weight", "bold")
+            .style("font-size", "20px")
+            .text("Batting Average and Home Run Trend by Handedness");
 
 
     chart2.draw();
