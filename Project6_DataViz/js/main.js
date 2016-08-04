@@ -44,13 +44,13 @@
             var y2 =chart2.addMeasureAxis("y", "avg");
             y2.title = "Batting Average";
             y2.fontSize = "12px";
-            y2.ticks = 20;
+            y2.ticks = 10;
             y2.tickFormat = ',.3f';
 
             //chart2.addMeasureAxis("z", "Operating Profit");
             chart2.addSeries(["name", "handedness"], dimple.plot.bubble);
             //chart2.addLegend(850, 120, 40, 400, "right")
-            chart2.addLegend(850, 480, 40, 400, "right");
+            var Legend2 = chart2.addLegend(850, 480, 40, 400, "right");
 
 
         svg2.append("text")
@@ -60,9 +60,76 @@
             .style("font-weight", "bold")
             .style("font-size", "20px")
             .text("Batting Average and Home Run Trend by Handedness");
+            
+            chart2.draw();
+
+        // This is a critical step.  By doing this we orphan the legend. This
+        // means it will not respond to graph updates.  Without this the legend
+        // will redraw when the chart refreshes removing the unchecked item and
+        // also dropping the events we define below.
+            chart2.legends = [];
+
+        // This block simply adds the legend title. I put it into a d3 data
+        // object to split it onto 2 lines.  This technique works with any
+        // number of lines, it isn't dimple specific.
+            svg2.selectAll("title_text")
+              .data(["Click legend to","show/hide stances:"])
+              .enter()
+              .append("text")
+                .attr("x", 800)
+                .attr("y",  function (d, i) { return 470 + i * 14; })
+                .style("font-family", "sans-serif")
+                .style("font-size", "10px")
+                .style("color", "Black")
+                .text(function (d) { return d; });
+
+            // Get a unique list of Owner values to use when filtering
+            var filterValues = dimple.getUniqueValues(data, "handedness");
+
+            // Get all the rectangles from our now orphaned legend
+            Legend2.shapes.selectAll("rect")
+
+        
+              // Add a click event to each rectangle
+              .on("click", function (e) {
+                // This indicates whether the item is already visible or not
+                var hide = false;
+                var newFilters = [];
+                // If the filters contain the clicked shape hide it
+                filterValues.forEach(function (f) {
+                  if (f === e.aggField.slice(-1)[0]) {
+                    hide = true;
+                  } else {
+                    newFilters.push(f);
+                  }
+                });
+                // Hide the shape or show it
+                if (hide) {
+                  d3.select(this).style("opacity", 0.2);
+                } else {
+                  newFilters.push(e.aggField.slice(-1)[0]);
+                  d3.select(this).style("opacity", 0.8);
+                }
+                // Update the filters
+                filterValues = newFilters;
+                // Filter the data
+                chart2.data = dimple.filterData(data, "handedness", filterValues);
+                // Passing a duration parameter makes the chart animate. Without
+                // it there is no transition
+                chart2.draw(); 
+            });
+        });
+
+// Chart3 - Box Plot for Baseball Data Set
 
 
-    chart2.draw();
+
+
+
+
+
+/* ----------------------------
+    //chart2.draw();
     });
     
 
