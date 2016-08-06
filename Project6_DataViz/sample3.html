@@ -31,21 +31,120 @@
     </div>
 
     <div class="row">
-      <p>This scatter plot shows the rough correlation between number of home runs and batting avergae for all 1157 players in the data set grouped by handedness. This chart makes it hard to tell if there is really and identifiable performance difference with regrds to handedness. We can see that there is a cluster of right handed players that have lower batting average. There are many players with a 0.000 batting average; these are possibly American League pitchers. Another observation is that left handed players ad switch hitters have a very similar pattern, where as right handed players seem to have many more players under the .2000 batting average. We do not see many lefties or switch hitters under .2000. Let's see what a plot of the means looks like between these three groups. </p>
+      <p>This scatter plot shows the rough correlation between number of home runs and batting avergae for all 1157 players in the data set grouped by handedness. This chart makes it hard to tell if there is really and identifiable performance difference with regrds to handedness. We can see that there is a cluster of right handed players that have lower batting average. There are many players with a 0.000 batting average; these are possibly American League pitchers. Another observation is that left handed players ad switch hitters have a very similar pattern, where as right handed players seem to have many more players under the .2000 batting average. We do not see many lefties or switch hitters under .2000. Let's look at a summary table between these three groups for both Home Runs and Batting Average. </p>
     </div>
 
     <div class="row">
       <div id="chart3"></div>
     </div>
 
+    <style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+    </style>
+
+    <table style="width:100%"> <!-- HR Summary -->
+      <caption>Home Run Summary</caption>
+      <tr>
+        <th>Handedness</th>
+        <th>Count</th>
+        <th>Minimum</th>
+        <th>Median</th>
+        <th>Mean</th>
+        <th>Maximum</th>
+      </tr>
+      <tr>
+        <td>Switch Hitter</td>
+        <td>104</td>
+        <td>0</td>
+        <td>13.0</td> 
+        <td>32.14</td>
+        <td>314</td>
+
+      </tr>
+      <tr>
+        <td>Left</td>
+        <td>316</td>
+        <td>0</td>
+        <td>23.5</td> 
+        <td>56.14</td>
+        <td>563</td>
+
+      </tr>
+      <tr>
+        <td>Right</td>
+        <td>737</td>
+        <td>0</td>
+        <td>14.0</td> 
+        <td>42.59</td>
+        <td>548</td>
+      </tr>
+    </table>
 
     <div class="row">
-      <p>fkjsdbfjhdkslbfvjlkdsbfkjvhbdskjhvbkhjdsbvkjsladh... </p>
+      <p>&nbsp;</p>
+      <p>Because of the number of Zeros in the data set (presumable pitchers), the median mightbe to look at versus the mean. It seems that lefties have a drammatically higher number of home runs. Lets see if this trend also shows up in the batting average table next. </p>
+    </div>
+
+    <table style="width:100%"> <!-- AVG Summary -->
+      <caption>Batting Average Summary</caption>
+      <tr>
+        <th>Handedness</th>
+        <th>Count</th>
+        <th>Minimum</th>
+        <th>Median</th>
+        <th>Mean</th>
+        <th>Maximum</th>
+      </tr>
+      <tr>
+        <td>Switch Hitter</td>
+        <td>104</td>
+        <td>0</td>
+        <td>0.2405</td> 
+        <td>0.2050</td>
+        <td>0.303</td>
+
+      </tr>
+      <tr>
+        <td>Left</td>
+        <td>316</td>
+        <td>0</td>
+        <td>0.2480</td> 
+        <td>0.2045</td>
+        <td>0.328</td>
+
+      </tr>
+      <tr>
+        <td>Right</td>
+        <td>737</td>
+        <td>0</td>
+        <td>0.2330</td> 
+        <td>0.1766</td>
+        <td>0.305</td>
+      </tr>
+    </table>
+
+    <div class="row">
+      <p>&nbsp;</p>
+      <p>Again, looking at the median, we can see a clear improvement in left handed player's batting average. The mean is certainly being dragged down by athe large number of zeros present in the data set. </p>
     </div>
 
     <h4 align="left">Conclusion</h4>
     <div class="row">
-      <p>fkjsdbfjhdkslbfvjlkdsbfkjvhbdskjhvbkhjdsbvkjsladh... </p>
+      <p>The visuals presented about this sample MLB baseball data set seems to suggest that left handed players on avergae perform slightly better, or perhaos have an advantage over right handed players. This follows along the lines of conventional wisdom when it comes to baseball. I think more data would provide a better overview. For example having data showing on base percentage (OBP) and power (number of doubles, triples and home runs) would bemore useful statistics compared to batting average and home runs. </p>
     </div>
 
     <div class="references">

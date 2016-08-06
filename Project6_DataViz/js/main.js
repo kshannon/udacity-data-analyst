@@ -63,15 +63,13 @@
             
             chart2.draw();
 
-        // This is a critical step.  By doing this we orphan the legend. This
+        // Doing this we orphan the legend. This
         // means it will not respond to graph updates.  Without this the legend
         // will redraw when the chart refreshes removing the unchecked item and
         // also dropping the events we define below.
             chart2.legends = [];
 
-        // This block simply adds the legend title. I put it into a d3 data
-        // object to split it onto 2 lines.  This technique works with any
-        // number of lines, it isn't dimple specific.
+        // This block simply adds the legend title. 
             svg2.selectAll("title_text")
               .data(["Click legend to","show/hide stances:"])
               .enter()
@@ -120,61 +118,3 @@
             });
         });
 
-// Chart3 - Box Plot for Baseball Data Set
-
-
-    var svg3 = dimple.newSvg("#chart3", width, height);
-    d3.csv("baseball_data_v2.csv", function(data){
-            var chart3 = new dimple.chart(svg3, data);
-
-            var x3 = chart3.addMeasureAxis("x", "HR");
-            x3.title = "Number of Home Runs";
-            x3.fontSize = "12px";
-
-            
-            var y3 =chart3.addMeasureAxis("y", "avg");
-            y3.title = "Batting Average";
-            y3.fontSize = "12px";
-            y3.ticks = 10;
-            y3.tickFormat = ',.3f';
-
-            //chart2.addMeasureAxis("z", "Operating Profit");
-            chart3.addSeries(["name", "handedness"], dimple.plot.bubble);
-            //chart2.addLegend(850, 120, 40, 400, "right")
-            var Legend3 = chart3.addLegend(850, 480, 40, 400, "right");
-    chart3.draw(); 
-    });
-
-
-
-
-
-/* ----------------------------
-    //chart2.draw();
-    });
-    
-
-
-
-    /*
-    // Bubble Chart for Baseball Data Set
-    var width = 1000,
-        height = 600;
-    var svg1 = dimple.newSvg("#chart1", width, height);
-    d3.csv("baseball_data.csv", function(data){
-        var chart = new dimple.chart(svg1, data);
-        chart.addPctAxis("x", "avg"); 
-        chart.addMeasureAxis("y", "HR");
-        chart.addMeasureAxis("z", "height");
-        chart.addSeries("name", dimple.plot.bubble);
-        chart.addColorAxis("handedness", "#FF0000")
-        svg1.append("text")
-         .attr("x", chart._xPixels() + chart._widthPixels() / 2)
-         .attr("y", chart._yPixels() - 20)
-         .style("text-anchor", "middle")
-         .style("font-weight", "bold")
-         .text("Batting Lefty: Advantage?");
-    chart.addLegend(65, 10, 510, 20, "right");
-    chart.draw();
-    });
-*/
