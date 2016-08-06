@@ -89,57 +89,16 @@ ggplot(aes(x = HR), data = data) +
 summary(data$HR)
 ```
 
-```{r corr heat map, echo=FALSE, results='hide'}
-
-cormat <- round(cor(data),2)
-head(cormat)
-tail(cormat)
-
-
-melted_cormat <- melt(cormat)
-head(melted_cormat)
-tail(melted_cormat)
-
-
-# Get lower triangle of the correlation matrix
-  get_lower_tri<-function(cormat){
-    cormat[upper.tri(cormat)] <- NA
-    return(cormat)
-  }
-  # Get upper triangle of the correlation matrix
-  get_upper_tri <- function(cormat){
-    cormat[lower.tri(cormat)]<- NA
-    return(cormat)
-  }
-  
-upper_tri <- get_upper_tri(cormat)
-upper_tri
-
-melted_cormat <- melt(upper_tri, na.rm = TRUE)
 
 
 
-ggplot(data = melted_cormat, aes(x=Var1, y=Var2, fill=value)) +
-  labs(x="Features", y="Features", title="Correlation Heatmap Matrix") +
-  geom_tile(data=melted_cormat, aes(fill=value), color="black")+
-  geom_text(aes(Var2, Var1, label = value), color = "black", size = 2)+
-  scale_fill_gradient2(low="#3794bf", high="#df8640", mid="#ffffff", midpoint=0, limit=c(-1,1),name="Correlation\n(Pearson)") +
-  theme(axis.text.x = element_text(angle=45, vjust=1, size=11, hjust=1), legend.title = element_text(size=10))+
-  coord_equal()
-
-```
-
-
-```{r citric acids with quiality, echo=FALSE}
-
-#df[df$prop == 0] <- NA
-#num_data[which(num_data$avg>0),],
+```{r plot, echo=FALSE}
 
 
 p1 <- ggplot(aes(x = avg, y = height), data = num_data) +
   geom_point(alpha = 1/4, position = 'jitter') + 
-  geom_smooth(method = "lm", se = TRUE) +
-  scale_x_continuous(limits = c(0, 1)
+  geom_smooth(method = "lm", se = TRUE) #+
+  #scale_x_continuous(limits = c(0, 1)
 
 p2 <- ggplot(aes(x = avg, y = HR), data = num_data) +
   geom_point(alpha = 1/4, position = 'jitter')+ 
@@ -151,5 +110,12 @@ grid.arrange(p1, p2, nrow = 1)
 
 
 
+```{r summary by group, echo=FALSE}
 
+aggregate(avg~handedness, data=data, FUN="mean")
+aggregate(avg~handedness, data=data, FUN="length")
+aggregate(avg~handedness, data=data, FUN="min")
+aggregate(avg~handedness, data=data, FUN="max")
+aggregate(avg~handedness, data=data, FUN="median")
 
+```

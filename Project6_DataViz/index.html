@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <title>Batting Lefty, Advantage?</title>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="css/style.css" rel="stylesheet" />
+  </head>
+
+  <body class="container">
+
+    <div class="row">
+      <h1 align="center">Batting Lefty: Advantage?</h1>
+      <p>In baseball not all is created equal. For example, left handed batters are able to see a right handed pitcher's hand and ascertain more info on what type of pitch may be coming. Left handed batters are also several feet closer to first base and after they swing at a ball their weight naturally carries them towards first base. Perhaps then left handed players might perform better due to these advantages..</p>
+    </div>
+
+    <div class="row">
+      <div id="chart1"></div>
+    </div>
+
+    <div class="row">
+      <p>Clearly Right handed batters, which comprise 63.8% of batters from this data set, are the majority. However, in the general population studies suggest right handers account for approx 88-92%[1]. In our data set Left handers account for 27.3%, which is fairly higher compared to the population. We also see that Switch Hitters account for 8.9%, however in the population cross-dominance and true Ambidexterity account for 1% or less[2].</p>
+    </div>
+
+
+    <div class="row">
+      <div id="chart2"></div>
+    </div>
+
+    <div class="row">
+      <p>This scatter plot shows the rough correlation between number of home runs and batting avergae for all 1157 players in the data set grouped by handedness. This chart makes it hard to tell if there is really and identifiable performance difference with regrds to handedness. We can see that there is a cluster of right handed players that have lower batting average. There are many players with a 0.000 batting average; these are possibly American League pitchers. Another observation is that left handed players ad switch hitters have a very similar pattern, where as right handed players seem to have many more players under the .2000 batting average. We do not see many lefties or switch hitters under .2000. Let's look at a summary table between these three groups for both Home Runs and Batting Average. </p>
+    </div>
+
+    <div class="row">
+      <div id="chart3"></div>
+    </div>
+
+    <style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+    </style>
+
+    <table style="width:100%"> <!-- HR Summary -->
+      <caption>Home Run Summary</caption>
+      <tr>
+        <th>Handedness</th>
+        <th>Count</th>
+        <th>Minimum</th>
+        <th>Median</th>
+        <th>Mean</th>
+        <th>Maximum</th>
+      </tr>
+      <tr>
+        <td>Switch Hitter</td>
+        <td>104</td>
+        <td>0</td>
+        <td>13.0</td> 
+        <td>32.14</td>
+        <td>314</td>
+
+      </tr>
+      <tr>
+        <td>Left</td>
+        <td>316</td>
+        <td>0</td>
+        <td>23.5</td> 
+        <td>56.14</td>
+        <td>563</td>
+
+      </tr>
+      <tr>
+        <td>Right</td>
+        <td>737</td>
+        <td>0</td>
+        <td>14.0</td> 
+        <td>42.59</td>
+        <td>548</td>
+      </tr>
+    </table>
+
+    <div class="row">
+      <p>&nbsp;</p>
+      <p>Because of the number of Zeros in the data set (presumable pitchers), the median mightbe to look at versus the mean. It seems that lefties have a drammatically higher number of home runs. Lets see if this trend also shows up in the batting average table next. </p>
+    </div>
+
+    <table style="width:100%"> <!-- AVG Summary -->
+      <caption>Batting Average Summary</caption>
+      <tr>
+        <th>Handedness</th>
+        <th>Count</th>
+        <th>Minimum</th>
+        <th>Median</th>
+        <th>Mean</th>
+        <th>Maximum</th>
+      </tr>
+      <tr>
+        <td>Switch Hitter</td>
+        <td>104</td>
+        <td>0</td>
+        <td>0.2405</td> 
+        <td>0.2050</td>
+        <td>0.303</td>
+
+      </tr>
+      <tr>
+        <td>Left</td>
+        <td>316</td>
+        <td>0</td>
+        <td>0.2480</td> 
+        <td>0.2045</td>
+        <td>0.328</td>
+
+      </tr>
+      <tr>
+        <td>Right</td>
+        <td>737</td>
+        <td>0</td>
+        <td>0.2330</td> 
+        <td>0.1766</td>
+        <td>0.305</td>
+      </tr>
+    </table>
+
+    <div class="row">
+      <p>&nbsp;</p>
+      <p>Again, looking at the median, we can see a clear improvement in left handed player's batting average. The mean is certainly being dragged down by athe large number of zeros present in the data set. </p>
+    </div>
+
+    <h4 align="left">Conclusion</h4>
+    <div class="row">
+      <p>The visuals presented about this sample MLB baseball data set seems to suggest that left handed players on avergae perform slightly better, or perhaos have an advantage over right handed players. This follows along the lines of conventional wisdom when it comes to baseball. I think more data would provide a better overview. For example having data showing on base percentage (OBP) and power (number of doubles, triples and home runs) would bemore useful statistics compared to batting average and home runs. </p>
+    </div>
+
+    <div class="references">
+      <h4 align="left">Referances</h4>
+      <ol>
+      <li> Holder, M. K. (1997). "Why are more people right-handed?". Sciam.com. Scientific American Inc. Retrieved 2008-04-14.</li>
+      <li> Annett, Marian (2002). Handedness and Brain Asymmetry. Psychology Press.</li>
+      <li>http://www.newsweek.com/science-why-lefties-make-better-baseball-players-92783</li>
+      <li>http://blogs.discovermagazine.com/discoblog/2008/07/08/why-do-so-many-lefties-play-baseball-its-built-for-them/</li>
+      <li>http://dimplejs.org/advanced_examples_viewer.html?id=advanced_interactive_legends</li>
+      </ol>
+    </div>
+
+
+
+
+    <script src="js/main.js"></script>
+  </body>
+
+</html>
+
+
