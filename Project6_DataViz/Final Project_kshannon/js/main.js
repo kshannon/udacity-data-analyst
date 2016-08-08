@@ -17,6 +17,9 @@
         
         chart.addSeries(["handedness"], dimple.plot.bar); // updates tool tip too!
         chart.addLegend(850, 120, 40, 400, "right")
+        chart.assignColor("Right Handed","#fb8072");
+        chart.assignColor("Left Handed","#80b1d3");
+        chart.assignColor("Switch Hitter","#fdb462");
         //chart.assignColor("handedness", [], stroke, .25) //this break my first chart.. worked before.
 
         svg1.append("text")
@@ -60,6 +63,7 @@
             .style("font-weight", "bold")
             .style("font-size", "20px")
             .text("Batting Average and Home Run Trend by Handedness");
+
             
             chart2.draw();
 
@@ -118,3 +122,7 @@
             });
         });
 
+// colors for basic dimple charts
+// Blue #80b1d3
+// Red #fb8072
+// Yellow #fdb462
