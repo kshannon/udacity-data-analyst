@@ -15,7 +15,7 @@
         y.title = "MLB Player Count";
         y.fontSize = "12px";
 
-        chart.addSeries(["handedness"], dimple.plot.bar); // updates tool tip too!
+        var mySeries = chart.addSeries(["handedness"], dimple.plot.bar); // updates tool tip too!
         chart.addLegend(850, 120, 40, 400, "right")
         chart.assignColor("Right Handed", "#fb8072");
         chart.assignColor("Left Handed", "#80b1d3");
@@ -27,7 +27,31 @@
             .style("text-anchor", "middle")
             .style("font-weight", "bold")
             .style("font-size", "20px")
-            .text("Batting Stances of MLB Players");
+            .text("Batting Stances of 1,157 MLB Players");
+
+        svg1.append("text")
+            .attr("x", 235)
+            .attr("y", 140)
+            .style("text-anchor", "middle")
+            .style("font-weight", "bold")
+            .style("font-size", "40px")
+            .text("63.8%");
+
+        svg1.append("text")
+            .attr("x", 505)
+            .attr("y", 390)
+            .style("text-anchor", "middle")
+            .style("font-weight", "bold")
+            .style("font-size", "40px")
+            .text("27.3%");
+
+        svg1.append("text")
+            .attr("x", 780)
+            .attr("y", 520)
+            .style("text-anchor", "middle")
+            .style("font-weight", "bold")
+            .style("font-size", "40px")
+            .text("8.9%");
 
         chart.draw();
     });
@@ -63,13 +87,30 @@
             .style("font-size", "20px")
             .text("Batting Average and Home Run Trend by Handedness");
 
+        svg2.append("text")
+            .attr("x", 785)
+            .attr("y", 280)
+            .style("text-anchor", "middle")
+            .style("font-weight", "bold")
+            .style("font-size", "14px")
+            .text(".200 Batting Average Cutoff Line");
+
+        svg2.append("line")
+            .attr("x1", 100)
+            .attr("x2", 900)
+            .attr("y1", 265)
+            .attr("y2", 265)
+            .style("stroke", "black")
+            .style("stroke-dasharray", "3");
+
 
         chart2.draw();
 
         // Doing this we orphan the legend. This
         // means it will not respond to graph updates.  Without this the legend
         // will redraw when the chart refreshes removing the unchecked item and
-        // also dropping the events we define below.
+        // also dropping the events we define below. 
+        //(helpful example from dimple.js docs)
         chart2.legends = [];
 
         // This block simply adds the legend title. 
