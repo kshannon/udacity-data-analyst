@@ -1,3 +1,15 @@
+
+    function countBatters(arr, value) {
+        var count = 0;
+        for (i=0; i < arr.length; i++) {
+            if (arr[i]['handedness'] === value) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
     var width = 1000,
         height = 600;
 
@@ -21,13 +33,19 @@
         chart.assignColor("Left Handed", "#80b1d3");
         chart.assignColor("Switch Hitter", "#fdb462");
 
+        var rightCount = countBatters(chart.data, 'Right Handed');
+        var leftCount = countBatters(chart.data, 'Left Handed');
+        var switchCount = countBatters(chart.data, 'Switch Hitter');
+
+        //var dataPoints = chart.data.length;
+
         svg1.append("text")
             .attr("x", chart._xPixels() + chart._widthPixels() / 2)
             .attr("y", chart._yPixels() - 5)
             .style("text-anchor", "middle")
             .style("font-weight", "bold")
             .style("font-size", "20px")
-            .text("Batting Stances of 1,157 MLB Players");
+            .text("Batting Stances of " + chart.data.length + " MLB Players");
 
         svg1.append("text")
             .attr("x", 235)
@@ -35,7 +53,7 @@
             .style("text-anchor", "middle")
             .style("font-weight", "bold")
             .style("font-size", "40px")
-            .text("63.8%");
+            .text((rightCount / chart.data.length * 100).toFixed(2) + "%");
 
         svg1.append("text")
             .attr("x", 505)
@@ -43,7 +61,7 @@
             .style("text-anchor", "middle")
             .style("font-weight", "bold")
             .style("font-size", "40px")
-            .text("27.3%");
+            .text((leftCount / chart.data.length * 100).toFixed(2) + "%");
 
         svg1.append("text")
             .attr("x", 780)
@@ -51,7 +69,7 @@
             .style("text-anchor", "middle")
             .style("font-weight", "bold")
             .style("font-size", "40px")
-            .text("8.9%");
+            .text((switchCount / chart.data.length * 100).toFixed(2) + "%");
 
         chart.draw();
     });
