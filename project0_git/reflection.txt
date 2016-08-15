@@ -1,0 +1,14 @@
+Kyle Shannon - Udacity Notes/Reflection for Git Course
+8/14/16
+
+Question 1: Thoughts on diff for file compare?
+ - Diff was much faster because it only showed you the difference between both files.
+ - Also, It showed you both the old and new file text next to each other. Very useful.
+Question 2: How does having access to all version make you a better/more efficient programmer?
+ - You can learn from your mistakes and review your logical process with your self and collegues.
+ - You can roll back if you frak something up and break your project/code and cannot get back easily. Rolling back makes you faster and makes it easier ot try things out.  
+Question 3: Pros/Cons of manually choosing when to create a commit?
+ - Logic follows decision. E.g. you can commit after a series of small related changes, or after one large function refactor, etc.
+ - I would think the correlation between time and need for commit is low.
+Question 4: Why Git allows saving N files in one Commit?
+ - Because programmers usually work on projects that involve multiple files, or work collaboratively. 
