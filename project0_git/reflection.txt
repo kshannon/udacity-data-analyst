@@ -12,3 +12,6 @@ Question 3: Pros/Cons of manually choosing when to create a commit?
  - I would think the correlation between time and need for commit is low.
 Question 4: Why Git allows saving N files in one Commit?
  - Because programmers usually work on projects that involve multiple files, or work collaboratively. 
+Question 5: How does git diff and git log allow you to view the file's history?
+ - Log allows you to see the sequences os changes from a high level that you have done. Sort of like a timeline.
+ - Diff provides you a detailed look into what exact changes, line by line, you have done with each file.
