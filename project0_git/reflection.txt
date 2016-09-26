@@ -15,3 +15,9 @@ Question 4: Why Git allows saving N files in one Commit?
 Question 5: How does git diff and git log allow you to view the file's history?
  - Log allows you to see the sequences os changes from a high level that you have done. Sort of like a timeline.
  - Diff provides you a detailed look into what exact changes, line by line, you have done with each file.
+Question 6: Why does version control make you a more cofident programmer?
+ - Being able to make critical changes to code (that may break something) is necessary, and being able to roll back is important. It makes trying out different approcahes easier. 
+ - You can also try out two different approahes and then after implimentation choose to move forward with one.
+Question 7: WHat do you want to do with Git?
+ - Use it on personal projects (e.g. Kivy python project)
+ - Learn more about git and github and slick commands from the commnad line.
